@@ -14,37 +14,18 @@
             <h4 class="icon-title">Login untuk melanjutkan</h4>
           </div>
         </div>
-        <form class="form-a contactForm" action="{% url 'login_client' %}" method="POST" role="form">
+        <form class="form" action="{% url 'login_client' %}" method="POST" role="form">
           {% csrf_token %}
-          <div id="sendmessage">{{ message }}</div>
-          <div id="errormessage"></div>
-          <div class="row">
+          <div id="errormessage">{{ message }}</div>
+          <div class="row mt-3">
             <div class="col-md-12 mb-3">
               <div class="form-group">
-                <!-- <input
-                  type="text"
-                  name="username"
-                  class="form-control form-control-lg form-control-a"
-                  placeholder="Username atau password"
-                  data-rule="minlen:4"
-                  data-msg="Harap masukkan minimal 4 karakter"
-                />
-                <div class="validation"></div> -->
                 {{ form.username.error }}
                 {% render_field form.username class+='form-control form-control-lg form-control-a' placeholder=form.username.label%}
               </div>
             </div>
             <div class="col-md-12 mb-3">
               <div class="form-group">
-                <!-- <input
-                  name="password"
-                  type="password"
-                  class="form-control form-control-lg form-control-a"
-                  placeholder="Password"
-                  data-rule="password"
-                  data-msg="Harap masukkan password yang valid"
-                  />
-                  <div class="validation"></div> -->
                 {{ form.password.error }}
                 {% render_field form.password class+='form-control form-control-lg form-control-a'  placeholder=form.password.label%}
 

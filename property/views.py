@@ -1,12 +1,18 @@
 import logging
 from .forms import LoginForm
 from django.contrib.auth import authenticate, logout, login
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, reverse
+
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.DEBUG)
 
 def login_client(request):
     """
     docstring
     """
+    if request.user.is_authenticated:
+        return redirect(reverse("home"))
+        
     templates = "login.html"
     context = {
         "title": "Login",
@@ -14,24 +20,28 @@ def login_client(request):
     }
     
     if request.method == "POST":
-        logging.info("authenticating..")
+        logger.info("authenticating..")
         form = LoginForm(request.POST)
         if form.is_valid():
             username = form.cleaned_data.get("username")
             password = form.cleaned_data.get("password")
             user = authenticate(username=username, password=password)
-            if user:
-                try:
-                    login(request, user)
-                    logging.info(f"Login {username} success")
-                    return redirect("home")
-                except Exception as err:
-                    logging.error(str(err))
-            else:
-                message = f"User {username} tidak aktif"
-                logging.warning(message)
-                context["message"] = message
             
+            if user is not None:
+                if user.is_active:
+                    login(request, user)
+                    logger.info(f"Login {username} success")
+                    return redirect("home")
+                else:
+                    message = f"{username} tidak aktif"
+                    logger.warning(message)
+                    context["message"] = message
+                    context["form"] = LoginForm()
+            else:
+                message = f"User {username} gagal login"
+                logger.warning(message)
+                context["message"] = message
+                context["form"] = LoginForm()
     else:
         context["form"] = LoginForm()
 
@@ -42,6 +52,7 @@ def home(request):
     """
     docstring
     """
+    logger.info(f"{request.user} mencoba masuk")
     if not request.user.is_authenticated:
         return redirect('logout_client')
 
