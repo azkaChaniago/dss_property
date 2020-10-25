@@ -1,5 +1,5 @@
 import logging
-from .forms import LoginForm
+from .forms import LoginForm, CustomerForm
 from django.contrib.auth import authenticate, logout, login
 from django.shortcuts import render, redirect, reverse
 
@@ -67,3 +67,48 @@ def home(request):
 def logout_client(request):
     logout(request)
     return redirect("login_client")
+
+
+def register_client(request):
+    """
+    docstring
+    """
+    templates = "register.html"
+    context = {
+        "title": "Register",
+        "menu": "register_menu",
+    }
+    
+    if request.method == "POST":
+        logger.info("authenticating..")
+        form_user = LoginForm(request.POST)
+        form_customer = CustomerForm(request.POST)
+        if form.is_valid():
+            username = form_user.cleaned_data.get("username")
+            password = form_user.cleaned_data.get("password")
+            address = form_customer.cleaned_data.get("address")
+            phone = form_customer.cleaned_data.get("phone")
+            email = form_customer.cleaned_data.get("email")
+            fullname = form_customer.cleaned_data.get("fullname")
+            
+            if user is not None:
+                if user.is_active:
+                    login(request, user)
+                    logger.info(f"Login {username} success")
+                    return redirect("home")
+                else:
+                    message = f"{username} tidak aktif"
+                    logger.warning(message)
+                    context["message"] = message
+                    context["form"] = LoginForm()
+            else:
+                message = f"User {username} gagal login"
+                logger.warning(message)
+                context["message"] = message
+                context["form"] = LoginForm()
+    else:
+        context["form_user"] = LoginForm()
+        context["form_customer"] = CustomerForm()
+
+    return render(request, templates, context)
+    

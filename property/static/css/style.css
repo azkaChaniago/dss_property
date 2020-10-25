@@ -1616,7 +1616,8 @@ footer .credits {
 }
 
 .btn.btn-a,
-.btn.btn-b {
+.btn.btn-b,
+.btn.btn-warn {
   border-radius: 0;
   padding: 1rem 3rem;
   letter-spacing: .05rem;
@@ -1650,6 +1651,16 @@ footer .credits {
 
 .btn.btn-b-n:hover {
   background-color: #26a356;
+  color: #ffffff;
+}
+
+.btn.btn-warn {
+  background-color: #ffd000;
+  color: #000000;
+}
+
+.btn.btn-warn:hover {
+  background-color: #000000;
   color: #ffffff;
 }
 
