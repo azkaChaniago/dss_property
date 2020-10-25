@@ -40,12 +40,16 @@
 
   <body>
 
-    {% include 'components/header.html' %}
-
+    {% if request.path != '/login/' %}
+      {% include 'components/header.html' %}
+    {% endif %}
+    
     {% block content %}
     {% endblock %}
 
-    {% include 'components/footer.html' %}
+    {% if request.path != '/login/' %}
+      {% include 'components/footer.html' %}
+    {% endif %}
 
     <!-- JavaScript Libraries -->
     <script src="{% static 'lib/jquery/jquery.min.js' %}"></script>

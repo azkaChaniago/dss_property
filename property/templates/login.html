@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+{% load widget_tweaks %}
+{% block content %}
+
+<div class="col-sm-12 section-t8">
+  <div class="row">
+    <div class="col-md-6 offset-md-3">
+      <div class="icon-box section-b2">
+        <div class="icon-box-icon">
+          <span class="ion-ios-home"></span>
+        </div>
+        <div class="icon-box-content table-cell">
+          <div class="icon-box-title">
+            <h4 class="icon-title">Login untuk melanjutkan</h4>
+          </div>
+        </div>
+        <form class="form-a contactForm" action="{% url 'login_client' %}" method="POST" role="form">
+          {% csrf_token %}
+          <div id="sendmessage">{{ message }}</div>
+          <div id="errormessage"></div>
+          <div class="row">
+            <div class="col-md-12 mb-3">
+              <div class="form-group">
+                <!-- <input
+                  type="text"
+                  name="username"
+                  class="form-control form-control-lg form-control-a"
+                  placeholder="Username atau password"
+                  data-rule="minlen:4"
+                  data-msg="Harap masukkan minimal 4 karakter"
+                />
+                <div class="validation"></div> -->
+                {{ form.username.error }}
+                {% render_field form.username class+='form-control form-control-lg form-control-a' placeholder=form.username.label%}
+              </div>
+            </div>
+            <div class="col-md-12 mb-3">
+              <div class="form-group">
+                <!-- <input
+                  name="password"
+                  type="password"
+                  class="form-control form-control-lg form-control-a"
+                  placeholder="Password"
+                  data-rule="password"
+                  data-msg="Harap masukkan password yang valid"
+                  />
+                  <div class="validation"></div> -->
+                {{ form.password.error }}
+                {% render_field form.password class+='form-control form-control-lg form-control-a'  placeholder=form.password.label%}
+
+              </div>
+            </div>
+            <div class="col-md-12">
+              <button type="submit" class="btn btn-a">Login</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  {% endblock %}
+</div>
