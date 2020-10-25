@@ -17,7 +17,7 @@ class Customer(models.Model):
     )
 
     def __str__(self):
-        return self.fullname
+        return self.fullname or self.user.username
 
 
 @receiver(post_save, sender=User)
