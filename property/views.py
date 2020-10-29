@@ -1,5 +1,6 @@
 import logging
 from .forms import LoginForm, CustomerForm
+from .models import Estate, EstateDetails, EstateGallery
 from django.contrib.auth import authenticate, logout, login
 from django.shortcuts import render, redirect, reverse
 
@@ -59,8 +60,10 @@ def home(request):
     templates = "home.html"
     context = {
         "title": "Welcome",
-        "menu": "home_menu"
+        "menu": "home_menu",
+        "estates": Estate.objects.all()
     }
+
     return render(request, templates, context)
 
 

@@ -45,6 +45,9 @@ class Estate(models.Model):
     locations = models.TextField(
         default="", verbose_name="Lokasi"
     )
+    picture = models.ImageField(
+        verbose_name="Gambar Thumbnail", null=True, blank=True
+    )
 
     def __str__(self):
         return f"[{self.lot_type}] {self.name}"
