@@ -39,13 +39,42 @@ class Estate(models.Model):
     lot_length = models.FloatField(verbose_name="Panjang")
     lot_width = models.FloatField(verbose_name="Lebar")
     price = models.FloatField(verbose_name="Harga")
+    description = models.TextField(
+        default="", verbose_name="Deskripsi"
+    )
+    locations = models.TextField(
+        default="", verbose_name="Lokasi"
+    )
 
     def __str__(self):
         return f"[{self.lot_type}] {self.name}"
 
 
-class EstateGallery(models.Model):
+class EstateDetails(models.Model):
     estate = models.ForeignKey(Estate, on_delete=models.CASCADE)
+    down_payment = models.FloatField(
+        default=0.00, blank=True, null=True
+    )
+    installment = models.IntegerField(
+        default=0, blank=True, null=True
+    )
+    installment_pay = models.FloatField(
+        default=0.00, blank=True, null=True
+    )
+    
+    def __str__(self):
+        return f"[{self.estate.lot_type}] {self.estate.name} \
+            ({self.installment}x)"
+
+
+class EstateGallery(models.Model):
+    IMAGE_TYPES = (
+        ("cover", "Gambar Cover"),
+        ("gallery", "Galeri"),
+    )
+
+    estate = models.ForeignKey(Estate, on_delete=models.CASCADE)
+    image_type = models.CharField(max_length=50, choices=IMAGE_TYPES, default="")
     image = models.ImageField(verbose_name="Gambar")
     description = models.CharField(
         max_length=100, verbose_name="Deskripsi"
