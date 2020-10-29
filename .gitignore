@@ -1,1 +1,7 @@
 *.jpg
+*.pyc
+.vscode/
+dss_property/__pycache__
+property/__pycache__
+property/migrations/
+property/migrations/__pycache__
