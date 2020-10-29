@@ -46,7 +46,8 @@ class Estate(models.Model):
         default="", verbose_name="Lokasi"
     )
     picture = models.ImageField(
-        verbose_name="Gambar Thumbnail", null=True, blank=True
+        verbose_name="Gambar Thumbnail",
+        null=True, blank=True, upload_to="media/"
     )
 
     def __str__(self):
@@ -78,7 +79,7 @@ class EstateGallery(models.Model):
 
     estate = models.ForeignKey(Estate, on_delete=models.CASCADE)
     image_type = models.CharField(max_length=50, choices=IMAGE_TYPES, default="")
-    image = models.ImageField(verbose_name="Gambar")
+    image = models.ImageField(verbose_name="Gambar", upload_to="media/")
     description = models.CharField(
         max_length=100, verbose_name="Deskripsi"
     )

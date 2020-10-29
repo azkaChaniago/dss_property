@@ -8,4 +8,4 @@ urlpatterns = [
     path('logout/', logout_client, name="logout_client"),
     path('register/', register_client, name="register_client"),
     path('', home, name="home"),
-]
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
