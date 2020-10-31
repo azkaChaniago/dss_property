@@ -3,7 +3,28 @@ from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 
+
+class Profession(models.Model):
+    profession = models.CharField(
+        max_length=100, verbose_name="Pekerjaan", default=""
+    )
+    weight = models.FloatField(
+        default=0.00, verbose_name="Bobot Nilai"
+    )
+
+    def __str__(self):
+        return self.profession
+
+
 class Customer(models.Model):
+    # temporary state, should be modified
+    LOAN_STATE = (
+        ("1", "Approval"),
+        ("2", "Penalty"),
+        ("3", "In Arrears"),
+        ("4", "Paid Off"),
+    )
+
     user = models.OneToOneField(
         User, on_delete=models.CASCADE, verbose_name="Akun"
     )
@@ -15,6 +36,31 @@ class Customer(models.Model):
     fullname = models.CharField(
         max_length=100, verbose_name="Nama"
     )
+    job_ktp = models.ForeignKey(
+        Profession,
+        on_delete=models.SET_NULL,
+        default="",
+        verbose_name="Pekerjaan (KTP)",
+        null=True
+    )
+    job = models.CharField(
+        max_length=100,
+        default="",
+        verbose_name="Pekerjaan",
+        null=True,
+        blank=True
+    )
+    salary = models.FloatField(default=0.00, verbose_name="Gaji")
+    on_loan = models.BooleanField(
+        default=False, verbose_name="Punya pinjaman?"
+    )
+    loan_state = models.CharField(
+        default="",
+        max_length=20,
+        verbose_name="Status Pinjaman",
+        choices=LOAN_STATE
+    )
+
 
     def __str__(self):
         return self.fullname or self.user.username
@@ -49,6 +95,8 @@ class Estate(models.Model):
         verbose_name="Gambar Thumbnail",
         null=True, blank=True, upload_to="media/"
     )
+    bedroom = models.IntegerField(default=1, verbose_name="Kamar Tidur")
+    bathroom = models.IntegerField(default=1, verbose_name="Kamar Mandi")
 
     def __str__(self):
         return f"[{self.lot_type}] {self.name}"
@@ -59,10 +107,10 @@ class EstateDetails(models.Model):
     down_payment = models.FloatField(
         default=0.00, blank=True, null=True
     )
-    installment = models.IntegerField(
+    tenor = models.IntegerField(
         default=0, blank=True, null=True
     )
-    installment_pay = models.FloatField(
+    installment = models.FloatField(
         default=0.00, blank=True, null=True
     )
     
