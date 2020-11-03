@@ -1,5 +1,5 @@
 import logging
-from .forms import LoginForm, CustomerForm
+from .forms import LoginForm, CustomerForm, EstateForm
 from .models import Estate, EstateDetails, EstateGallery
 from django.contrib.auth import authenticate, logout, login
 from django.shortcuts import render, redirect, reverse
@@ -57,11 +57,18 @@ def home(request):
     if not request.user.is_authenticated:
         return redirect('logout_client')
 
+    form = EstateForm()
+    if request.POST:
+        form = EstateForm(request.POST)
+        if form.is_valid():
+            pass
+
     templates = "home.html"
     context = {
         "title": "Welcome",
         "menu": "home_menu",
-        "estates": Estate.objects.all()
+        "estates": Estate.objects.all(),
+        "estate_forms": form
     }
 
     return render(request, templates, context)

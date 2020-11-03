@@ -1,4 +1,5 @@
 from django import forms
+from django.forms import TextInput, Textarea, IntegerField, FloatField
 from django.contrib.auth.models import User
 from .models import Customer, Estate, Profession
 
@@ -67,8 +68,4 @@ class CustomerForm(forms.Form):
 class EstateForm(forms.ModelForm):
     class Meta:
         model = Estate
-        fields = [
-            "name", "lot_type", "lot_length", "lot_width",
-            "price", "description", "locations", "picture",
-            "bedroom", "bathroom"
-        ]
+        exclude = ["picture"]
