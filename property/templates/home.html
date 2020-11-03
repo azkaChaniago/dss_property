@@ -54,17 +54,9 @@
       </div>
     </div>
     <div class="row">
-      <form class="form-a">
+      <form class="form-a" method="POST" action="{% url 'home' %}">
         {% csrf_token %}
         <div class="row">
-          <div class="col-6">
-            <div class="form-group">
-              <label for="{% render_field estate_forms.name.id_for_label %}">
-                {% render_field estate_forms.name.label %}
-              </label>
-              {% render_field estate_forms.name class+='form-control' %}
-            </div>
-          </div>
           <div class="col-6">
             <div class="form-group">
               <label for="{% render_field estate_forms.lot_type.id_for_label %}">
@@ -75,6 +67,22 @@
           </div>
         </div>
         <div class="row">
+          <div class="col-3">
+            <div class="form-group">
+              <label for="{% render_field estate_forms.start_price.id_for_label %}">
+                {% render_field estate_forms.start_price.label %}
+              </label>
+              {% render_field estate_forms.start_price class+='form-control' %}
+            </div>
+          </div>
+          <div class="col-3">
+            <div class="form-group">
+              <label for="{% render_field estate_forms.end_price.id_for_label %}">
+                {% render_field estate_forms.end_price.label %}
+              </label>
+              {% render_field estate_forms.end_price class+='form-control' %}
+            </div>
+          </div>
           <div class="col-3">
             <div class="form-group">
               <label for="{% render_field estate_forms.lot_length.id_for_label %}">
@@ -91,16 +99,6 @@
               {% render_field estate_forms.lot_width class+='form-control' %}
             </div>
           </div>
-          <div class="col-6">
-            <div class="form-group">
-              <label for="{% render_field estate_forms.price.id_for_label %}">
-                {% render_field estate_forms.price.label %}
-              </label>
-              {% render_field estate_forms.price class+='form-control' %}
-            </div>
-          </div>
-        </div>
-        <div class="row">
           <div class="col-3">
             <div class="form-group">
               <label for="{% render_field estate_forms.bedroom.id_for_label %}">
@@ -118,31 +116,69 @@
             </div>
           </div>
         </div>
-        <div class="row">
-          <div class="col-12">
-            <div class="form-group">
-              <label for="{% render_field estate_forms.description.id_for_label %}">
-                {% render_field estate_forms.description.label %}
-              </label>
-              {% render_field estate_forms.description class+='form-control' rows='5' %}
-            </div>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-12">
-            <div class="form-group">
-              <label for="{% render_field estate_forms.locations.id_for_label %}">
-                {% render_field estate_forms.locations.label %}
-              </label>
-              {% render_field estate_forms.locations class+='form-control' rows='5' %}
-            </div>
-          </div>
-        </div>
         <div class="col-md-12">
           <button type="submit" class="btn btn-b">Search Property</button>
         </div>
       </form>
     </div>
+    <br>
+    {% if query_results %}
+    <div class="row">
+      {% for res in query_results%}
+      <div class="carousel-item-b">
+        <div class="card-box-a card-shadow">
+          <div class="img-box-a">
+            <img src="{{ res.picture.url }}" alt="" class="img-a img-fluid" />
+          </div>
+          <div class="card-overlay">
+            <div class="card-overlay-a-content">
+              <div class="card-header-a">
+                <h2 class="card-title-a">
+                  <a href="property-single.html"
+                    >{{ res.lot_type }} <br />
+                    {{ res.name }}</a
+                  >
+                </h2>
+              </div>
+              <div class="card-body-a">
+                <div class="price-box d-flex">
+                  <span class="price-a">beli | IDR {{ res.price }}</span>
+                </div>
+                <a href="#" class="link-a"
+                  >Click here to view
+                  <span class="ion-ios-arrow-forward"></span>
+                </a>
+              </div>
+              <div class="card-footer-a">
+                <ul class="card-info d-flex justify-content-around">
+                  <li>
+                    <h4 class="card-info-title">Area</h4>
+                    <span
+                      >340m
+                      <sup>2</sup>
+                    </span>
+                  </li>
+                  <li>
+                    <h4 class="card-info-title">Beds</h4>
+                    <span>2</span>
+                  </li>
+                  <li>
+                    <h4 class="card-info-title">Baths</h4>
+                    <span>4</span>
+                  </li>
+                  <li>
+                    <h4 class="card-info-title">Garages</h4>
+                    <span>1</span>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    {% endif %}
   </div>
 </section>
 <!--/ Services End /-->

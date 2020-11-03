@@ -68,4 +68,51 @@ class CustomerForm(forms.Form):
 class EstateForm(forms.ModelForm):
     class Meta:
         model = Estate
-        exclude = ["picture"]
+        exclude = ["name", "picture", "description", "locations"]
+
+
+class EstateSearchForm(forms.Form):
+    lot_type = forms.CharField(
+        label='Tipe Rumah',
+        max_length=100
+    )
+    start_price = forms.FloatField(
+        label='Harga Awal',
+        min_value=0,
+        widget=forms.TextInput(
+            attrs={
+                "type": "number",
+                "step": 0.01
+            }
+        )
+    )
+    end_price = forms.FloatField(
+        label='Harga Akhir',
+        min_value=0,
+        widget=forms.TextInput(
+            attrs={
+                "type": "number",
+                "step": 0.01
+            }
+        )
+    )
+    bedroom = forms.IntegerField(
+        label="Jumlah Kamar Tidur",
+        min_value=1,
+        widget=forms.TextInput(
+            attrs={
+                "type": "number",
+                "step": 1
+            }
+        )
+    )
+    bathroom = forms.IntegerField(
+        label="Jumlah Kamar Mandi",
+        min_value=1,
+        widget=forms.TextInput(
+            attrs={
+                "type": "number",
+                "step": 1
+            }
+        )
+    )

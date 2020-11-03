@@ -1,5 +1,5 @@
 import logging
-from .forms import LoginForm, CustomerForm, EstateForm
+from .forms import LoginForm, CustomerForm, EstateSearchForm
 from .models import Estate, EstateDetails, EstateGallery
 from django.contrib.auth import authenticate, logout, login
 from django.shortcuts import render, redirect, reverse
@@ -57,19 +57,34 @@ def home(request):
     if not request.user.is_authenticated:
         return redirect('logout_client')
 
-    form = EstateForm()
-    if request.POST:
-        form = EstateForm(request.POST)
-        if form.is_valid():
-            pass
-
     templates = "home.html"
     context = {
         "title": "Welcome",
         "menu": "home_menu",
         "estates": Estate.objects.all(),
-        "estate_forms": form
+        "estate_forms": EstateSearchForm()
     }
+    
+    if request.POST:
+        form = EstateSearchForm(request.POST)
+        filters = {}
+        if form.is_valid():
+            lot_type = form.cleaned_data.get("lot_type")
+            if lot_type:
+                filters.update({ "lot_type__iexact": lot_type })
+            bedroom = form.cleaned_data.get("bedroom")
+            if bedroom:
+                filters.update({ "bedroom": bedroom })
+            bathroom = form.cleaned_data.get("bathroom")
+            if bathroom:
+                filters.update({ "bathroom": bathroom })
+            start_price = form.cleaned_data.get("start_price")
+            end_price = form.cleaned_data.get("end_price")
+            if start_price and end_price:
+                filters.update({"price__range": (start_price, end_price) })
+            
+            estate = Estate.objects.filter(**filters)
+            context["query_results"] = estate
 
     return render(request, templates, context)
 
