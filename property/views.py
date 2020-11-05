@@ -2,7 +2,7 @@ import logging
 from .forms import LoginForm, CustomerForm, EstateSearchForm
 from .models import Estate, EstateDetails, EstateGallery
 from django.contrib.auth import authenticate, logout, login
-from django.shortcuts import render, redirect, reverse
+from django.shortcuts import render, redirect, reverse, get_object_or_404
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
@@ -137,3 +137,41 @@ def register_client(request):
 
     return render(request, templates, context)
     
+
+def estate_detail(request, pk):
+    """
+    docstring
+    """
+    estate = get_object_or_404(Estate, pk=pk)
+
+    logger.info(f"{request.user} mencoba masuk")
+    templates = "estate/estate_detail.html"
+    context = {
+        "title": "Detail Rumah",
+        "menu": "estate_detail_menu",
+        "estate": estate,
+        # "estate_forms": EstateSearchForm()
+    }
+    
+    # if request.POST:
+    #     form = EstateSearchForm(request.POST)
+    #     filters = {}
+    #     if form.is_valid():
+    #         lot_type = form.cleaned_data.get("lot_type")
+    #         if lot_type:
+    #             filters.update({ "lot_type__iexact": lot_type })
+    #         bedroom = form.cleaned_data.get("bedroom")
+    #         if bedroom:
+    #             filters.update({ "bedroom": bedroom })
+    #         bathroom = form.cleaned_data.get("bathroom")
+    #         if bathroom:
+    #             filters.update({ "bathroom": bathroom })
+    #         start_price = form.cleaned_data.get("start_price")
+    #         end_price = form.cleaned_data.get("end_price")
+    #         if start_price and end_price:
+    #             filters.update({"price__range": (start_price, end_price) })
+            
+    #         estate = Estate.objects.filter(**filters)
+    #         context["query_results"] = estate
+
+    return render(request, templates, context)

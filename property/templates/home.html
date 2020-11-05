@@ -54,10 +54,10 @@
       </div>
     </div>
     <div class="row">
-      <form class="form-a" method="POST" action="{% url 'home' %}">
+      <form class="form-a col-8 offset-2" method="POST" action="{% url 'home' %}">
         {% csrf_token %}
         <div class="row">
-          <div class="col-6">
+          <div class="col-12">
             <div class="form-group">
               <label for="{% render_field estate_forms.lot_type.id_for_label %}">
                 {% render_field estate_forms.lot_type.label %}
@@ -67,7 +67,7 @@
           </div>
         </div>
         <div class="row">
-          <div class="col-3">
+          <div class="col-6">
             <div class="form-group">
               <label for="{% render_field estate_forms.start_price.id_for_label %}">
                 {% render_field estate_forms.start_price.label %}
@@ -75,7 +75,7 @@
               {% render_field estate_forms.start_price class+='form-control' %}
             </div>
           </div>
-          <div class="col-3">
+          <div class="col-6">
             <div class="form-group">
               <label for="{% render_field estate_forms.end_price.id_for_label %}">
                 {% render_field estate_forms.end_price.label %}
@@ -83,23 +83,9 @@
               {% render_field estate_forms.end_price class+='form-control' %}
             </div>
           </div>
-          <div class="col-3">
-            <div class="form-group">
-              <label for="{% render_field estate_forms.lot_length.id_for_label %}">
-                {% render_field estate_forms.lot_length.label %}
-              </label>
-              {% render_field estate_forms.lot_length class+='form-control' %}
-            </div>
-          </div>
-          <div class="col-3">
-            <div class="form-group">
-              <label for="{% render_field estate_forms.lot_width.id_for_label %}">
-                {% render_field estate_forms.lot_width.label %}
-              </label>
-              {% render_field estate_forms.lot_width class+='form-control' %}
-            </div>
-          </div>
-          <div class="col-3">
+        </div>
+        <div class="row">
+          <div class="col-6">
             <div class="form-group">
               <label for="{% render_field estate_forms.bedroom.id_for_label %}">
                 {% render_field estate_forms.bedroom.label %}
@@ -107,7 +93,7 @@
               {% render_field estate_forms.bedroom class+='form-control' %}
             </div>
           </div>
-          <div class="col-3">
+          <div class="col-6">
             <div class="form-group">
               <label for="{% render_field estate_forms.bathroom.id_for_label %}">
                 {% render_field estate_forms.bathroom.label %}
@@ -144,7 +130,7 @@
                 <div class="price-box d-flex">
                   <span class="price-a">beli | IDR {{ res.price }}</span>
                 </div>
-                <a href="#" class="link-a"
+                <a href="{% url 'estate_detail' res.id %}" class="link-a"
                   >Click here to view
                   <span class="ion-ios-arrow-forward"></span>
                 </a>
@@ -160,15 +146,11 @@
                   </li>
                   <li>
                     <h4 class="card-info-title">Beds</h4>
-                    <span>2</span>
+                    <span>{{ res.bedroom }}</span>
                   </li>
                   <li>
                     <h4 class="card-info-title">Baths</h4>
-                    <span>4</span>
-                  </li>
-                  <li>
-                    <h4 class="card-info-title">Garages</h4>
-                    <span>1</span>
+                    <span>{{ res.bathroom }}</span>
                   </li>
                 </ul>
               </div>
