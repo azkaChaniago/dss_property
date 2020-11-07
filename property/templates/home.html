@@ -28,7 +28,7 @@
                     {{ est.name }}
                   </h1>
                   <p class="intro-subtitle intro-price">
-                    <a href="#"><span class="price-a">beli | IDR {{ est.price }}</span></a>
+                    <a href="#"><span class="price-a">beli | Rp {% calculate_price est.price %}</span></a>
                   </p>
                 </div>
               </div>
@@ -129,7 +129,7 @@
               </div>
               <div class="card-body-a">
                 <div class="price-box d-flex">
-                  <span class="price-a">beli | IDR {{ res.price }}</span>
+                  <span class="price-a">beli | Rp {% calculate_price res.price %}</span>
                 </div>
                 <a href="{% url 'estate_detail' res.id %}" class="link-a"
                   >Click here to view
@@ -140,8 +140,8 @@
                 <ul class="card-info d-flex justify-content-around">
                   <li>
                     <h4 class="card-info-title">Area</h4>
-                    <span
-                      >{% calculate_area estate.lot_length estate.lot_width %}
+                    <span>
+                      {% calculate_area res.lot_length res.lot_width %}
                     </span>
                   </li>
                   <li>
@@ -202,7 +202,7 @@
               </div>
               <div class="card-body-a">
                 <div class="price-box d-flex">
-                  <span class="price-a">beli | IDR {{ est.price }}</span>
+                  <span class="price-a">beli | Rp {% calculate_price est.price %}</span>
                 </div>
                 <a href="#" class="link-a"
                   >Click here to view
@@ -213,22 +213,17 @@
                 <ul class="card-info d-flex justify-content-around">
                   <li>
                     <h4 class="card-info-title">Area</h4>
-                    <span
-                      >340m
-                      <sup>2</sup>
+                    <span>
+                      {% calculate_area est.lot_length est.lot_width %}
                     </span>
                   </li>
                   <li>
                     <h4 class="card-info-title">Beds</h4>
-                    <span>2</span>
+                    <span>{{ est.bedroom }}</span>
                   </li>
                   <li>
                     <h4 class="card-info-title">Baths</h4>
-                    <span>4</span>
-                  </li>
-                  <li>
-                    <h4 class="card-info-title">Garages</h4>
-                    <span>1</span>
+                    <span>{{ est.bathroom }}</span>
                   </li>
                 </ul>
               </div>
