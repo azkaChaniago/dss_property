@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load widget_tweaks %}
+{% load property_extras %}
 {% load static %}
 {% block content %}
 
@@ -86,8 +87,7 @@
                   </li>
                   <li class="d-flex justify-content-between">
                     <strong>Area:</strong>
-                    <span>m
-                      <sup>2</sup>
+                    <span>{% calculate_area estate.lot_length estate.lot_width %}
                     </span>
                   </li>
                   <li class="d-flex justify-content-between">

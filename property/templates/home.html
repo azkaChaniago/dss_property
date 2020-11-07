@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load widget_tweaks %}
+{% load property_extras %}
 {% load static %}
 {% block content %}
 
@@ -140,8 +141,7 @@
                   <li>
                     <h4 class="card-info-title">Area</h4>
                     <span
-                      >340m
-                      <sup>2</sup>
+                      >{% calculate_area estate.lot_length estate.lot_width %}
                     </span>
                   </li>
                   <li>
