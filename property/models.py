@@ -19,6 +19,7 @@ class Profession(models.Model):
 class Customer(models.Model):
     # temporary state, should be modified
     LOAN_STATE = (
+        ("0", "-"),
         ("1", "Approval"),
         ("2", "Penalty"),
         ("3", "In Arrears"),
@@ -126,10 +127,9 @@ class Customer(models.Model):
     fullname = models.CharField(
         max_length=100, verbose_name="Nama"
     )
-    job_ktp = models.CharField(
-        max_length=50,
-        choices=KTP_JOBS,
-        default="1",
+    job_ktp = models.ForeignKey(
+        Profession,
+        on_delete=models.CASCADE,
         verbose_name="Pekerjaan (KTP)",
         blank=True,
         null=True

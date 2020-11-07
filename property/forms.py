@@ -20,6 +20,7 @@ class LoginForm(forms.Form):
 
 class CustomerForm(forms.Form):
     LOAN_STATE = (
+        ("0", "-"),
         ("1", "Approval"),
         ("2", "Penalty"),
         ("3", "In Arrears"),
@@ -53,9 +54,9 @@ class CustomerForm(forms.Form):
         label='No Telepon / HP',
         max_length=100,
     )
-    job_ktp = forms.ChoiceField(
+    job_ktp = forms.ModelMultipleChoiceField(
         label="Pekerjaan KTP",
-        choices=Customer.KTP_JOBS
+        queryset=Profession.objects.all()
     )
     job = forms.CharField(
         label="Pekerjaan",
