@@ -41,6 +41,7 @@ class Customer(models.Model):
         on_delete=models.SET_NULL,
         default="",
         verbose_name="Pekerjaan (KTP)",
+        blank=True,
         null=True
     )
     job = models.CharField(
@@ -50,9 +51,17 @@ class Customer(models.Model):
         null=True,
         blank=True
     )
-    salary = models.FloatField(default=0.00, verbose_name="Gaji")
+    salary = models.FloatField(
+        default=0.00,
+        verbose_name="Gaji",
+        blank=True,
+        null=True
+    )
     on_loan = models.BooleanField(
-        default=False, verbose_name="Punya pinjaman?"
+        default=False,
+        verbose_name="Punya pinjaman?",
+        blank=True,
+        null=True
     )
     loan_state = models.CharField(
         default="",
@@ -60,7 +69,18 @@ class Customer(models.Model):
         verbose_name="Status Pinjaman",
         choices=LOAN_STATE
     )
-
+    start_budget = models.FloatField(
+        default=0.00,
+        verbose_name="Harga Awal",
+        blank=True,
+        null=True
+    )
+    end_budget = models.FloatField(
+        default=0.00,
+        verbose_name="Harga Akhir",
+        blank=True,
+        null=True
+    )
 
     def __str__(self):
         return self.fullname or self.user.username
@@ -69,6 +89,7 @@ class Customer(models.Model):
 @receiver(post_save, sender=User)
 def create_user_customer(sender, instance, created, ** kwargs):
     if created:
+        import ipdb;ipdb.set_trace()
         Customer.objects.create(user=instance)
 
 
@@ -78,6 +99,12 @@ def save_user_customer(sender, instance, **kwargs):
 
 
 class Estate(models.Model):
+    PROPERTY_STATE = (
+        ("available", 'Tersedia'),
+        ("booked", 'Booking'),
+        ("sold", 'Terjual'),
+    )
+    
     name = models.CharField(max_length=50, verbose_name="Nama")
     lot_type = models.CharField(
         max_length=50, verbose_name="Tipe Rumah"
@@ -97,6 +124,12 @@ class Estate(models.Model):
     )
     bedroom = models.IntegerField(default=1, verbose_name="Kamar Tidur")
     bathroom = models.IntegerField(default=1, verbose_name="Kamar Mandi")
+    state = models.CharField(
+        default="available",
+        max_length=50,
+        verbose_name="Status",
+        choices=PROPERTY_STATE
+    )
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     
@@ -140,4 +173,11 @@ class EstateGallery(models.Model):
     
     def __str__(self):
         return f"{self.description} ({self.estate})"
-        
+
+
+class EstateAmenity(models.Model):
+    estate = models.ManyToManyField(Estate)
+    name = models.CharField(default="", max_length=50)
+
+    def __str__(self):
+        return f"{self.estate.name} {self.name}"

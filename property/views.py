@@ -61,7 +61,7 @@ def home(request):
     context = {
         "title": "Welcome",
         "menu": "home_menu",
-        "estates": Estate.objects.all(),
+        "estates": Estate.objects.all().order_by('created_at', 'name'),
         "estate_forms": EstateSearchForm()
     }
     
