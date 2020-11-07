@@ -14,22 +14,18 @@
             <h4 class="icon-title">Login untuk melanjutkan</h4>
           </div>
         </div>
-        <form
-          class="form"
+        <form class="form"
           action="{% url 'register_client' %}"
           method="POST"
-          role="form"
-        >
+          role="form">
           {% csrf_token %}
           <div id="errormessage">{{ message }}</div>
           <div class="row mt-3">
             {{ form.as_p }}
             <div class="col-md-12">
-              <button type="submit" class="btn btn-a">Masuk</button>
+              <button type="submit" class="btn btn-a">Daftar</button>
               &nbsp;atau&nbsp;
-              <a href="{% url 'register_client' %}" class="btn btn-warn"
-                >Daftar</a
-              >
+              <a href="{% url 'login_client' %}" class="btn btn-warn">Login</a>
             </div>
           </div>
         </form>

@@ -99,6 +99,9 @@ def register_client(request):
     """
     docstring
     """
+    if request.user.is_authenticated:
+        return redirect("home")
+
     templates = "register.html"
     context = {
         "title": "Register",
@@ -116,11 +119,16 @@ def register_client(request):
             ).first()
             if not user:
                 username = fullname.lower().replace(" ", "_")
+                splited_name = fullname.split()
+                first_name = splited_name[0]
+                last_name = splited_name[-1] if len(splited_name) > 1 else ""
                 user = User(
                     username=username,
-                    email=form.cleaned_data.get("email"),
-                    password = form.cleaned_data.get("password")
+                    first_name=first_name,
+                    last_name=last_name,
+                    email=form.cleaned_data.get("email")
                 )
+                user.set_password(form.cleaned_data.get("password"))
                 user.save()
 
             customer = Customer(
@@ -137,7 +145,7 @@ def register_client(request):
                 end_budget=form.cleaned_data.get("end_budget")
             )
             customer.save()
-            return redirect("login")
+            return redirect("login_client")
 
     return render(request, templates, context)
     
