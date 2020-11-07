@@ -97,7 +97,9 @@ class Estate(models.Model):
     )
     bedroom = models.IntegerField(default=1, verbose_name="Kamar Tidur")
     bathroom = models.IntegerField(default=1, verbose_name="Kamar Mandi")
-
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    
     def __str__(self):
         return f"[{self.lot_type}] {self.name}"
 
@@ -113,7 +115,9 @@ class EstateDetails(models.Model):
     installment = models.FloatField(
         default=0.00, blank=True, null=True
     )
-    
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
     def __str__(self):
         return f"[{self.estate.lot_type}] {self.estate.name} \
             ({self.installment}x)"
@@ -131,7 +135,9 @@ class EstateGallery(models.Model):
     description = models.CharField(
         max_length=100, verbose_name="Deskripsi"
     )
-
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    
     def __str__(self):
         return f"{self.description} ({self.estate})"
         
