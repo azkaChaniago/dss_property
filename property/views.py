@@ -205,6 +205,7 @@ def estate_list(request):
     context = {
         "title": "Daftar Properti",
         "menu": "estate_list_menu",
+        "estates": estate,
         "estate_forms": EstateSearchForm()
     }
 
@@ -229,10 +230,10 @@ def estate_list(request):
         filters.update({ "lot_type": request.GET.get("type") })
 
     if filters:
-        estate = Estate.objects.filter(**filters)
+        estate = estate.filter(**filters)
         context.update({
             "title": "Hasil Pencarian",
-            "estate": estate
+            "estates": estate
         })
-
+    
     return render(request, templates, context)
