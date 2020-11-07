@@ -1,7 +1,8 @@
 import logging
 from .forms import LoginForm, CustomerForm, EstateSearchForm
-from .models import Estate, EstateDetails, EstateGallery
+from .models import Customer, Estate, EstateDetails, EstateGallery
 from django.contrib.auth import authenticate, logout, login
+from django.contrib.auth.models import User
 from django.shortcuts import render, redirect, reverse, get_object_or_404
 
 logger = logging.getLogger(__name__)
@@ -102,38 +103,41 @@ def register_client(request):
     context = {
         "title": "Register",
         "menu": "register_menu",
+        "form": CustomerForm()
     }
     
     if request.method == "POST":
         logger.info("authenticating..")
-        form_user = LoginForm(request.POST)
-        form_customer = CustomerForm(request.POST)
+        form = CustomerForm(request.POST)
         if form.is_valid():
-            username = form_user.cleaned_data.get("username")
-            password = form_user.cleaned_data.get("password")
-            address = form_customer.cleaned_data.get("address")
-            phone = form_customer.cleaned_data.get("phone")
-            email = form_customer.cleaned_data.get("email")
-            fullname = form_customer.cleaned_data.get("fullname")
-            
-            if user is not None:
-                if user.is_active:
-                    login(request, user)
-                    logger.info(f"Login {username} success")
-                    return redirect("home")
-                else:
-                    message = f"{username} tidak aktif"
-                    logger.warning(message)
-                    context["message"] = message
-                    context["form"] = LoginForm()
-            else:
-                message = f"User {username} gagal login"
-                logger.warning(message)
-                context["message"] = message
-                context["form"] = LoginForm()
-    else:
-        context["form_user"] = LoginForm()
-        context["form_customer"] = CustomerForm()
+            fullname = form.cleaned_data.get("fullname")
+            user = User.objects.filter(
+                email=form.cleaned_data.get("email")
+            ).first()
+            if not user:
+                username = fullname.lower().replace(" ", "_")
+                user = User(
+                    username=username,
+                    email=form.cleaned_data.get("email"),
+                    password = form.cleaned_data.get("password")
+                )
+                user.save()
+
+            customer = Customer(
+                user=user,
+                fullname=form.cleaned_data.get("fullname"),
+                address=form.cleaned_data.get("address"),
+                phone=form.cleaned_data.get("phone"),
+                job_ktp=form.cleaned_data.get("job_ktp"),
+                job=form.cleaned_data.get("job"),
+                salary=form.cleaned_data.get("salary"),
+                on_loan=form.cleaned_data.get("on_loan"),
+                loan_state=form.cleaned_data.get("loan_state"),
+                start_budget=form.cleaned_data.get("start_budget"),
+                end_budget=form.cleaned_data.get("end_budget")
+            )
+            customer.save()
+            return redirect("login")
 
     return render(request, templates, context)
     

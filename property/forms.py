@@ -39,6 +39,11 @@ class CustomerForm(forms.Form):
         max_length=255,
         widget=forms.PasswordInput
     )
+    password_repeat = forms.CharField(
+        label='Ulang Password',
+        max_length=255,
+        widget=forms.PasswordInput
+    )
     address = forms.CharField(
         label='Alamat',
         max_length=100,
@@ -48,8 +53,9 @@ class CustomerForm(forms.Form):
         label='No Telepon / HP',
         max_length=100,
     )
-    job_ktp = forms.ModelMultipleChoiceField(
-        queryset=Profession.objects.all()
+    job_ktp = forms.ChoiceField(
+        label="Pekerjaan KTP",
+        choices=Customer.KTP_JOBS
     )
     job = forms.CharField(
         label="Pekerjaan",
@@ -63,7 +69,22 @@ class CustomerForm(forms.Form):
         label="Status Angsuran",
         choices=LOAN_STATE
     )
+    start_budget = forms.FloatField(
+        label="Harga Awal",
+        widget=forms.TextInput
+    )
+    end_budget = forms.FloatField(
+        label="Harga Akhir",
+        widget=forms.TextInput
+    )
 
+    def clean(self):
+        cleaned_data = super(CustomerForm, self).clean()
+        password = cleaned_data.get("password")
+        password_repeat = cleaned_data.get("password_repeat")
+
+        if password != password_repeat:
+            raise forms.ValidationError("password and password_repeat does not match!")
 
 class EstateForm(forms.ModelForm):
     class Meta:

@@ -40,14 +40,14 @@
 
   <body>
 
-    {% if request.path != '/login/' %}
+    {% if request.path != '/login/' and request.path != '/register/' %}
       {% include 'components/header.html' %}
     {% endif %}
     
     {% block content %}
     {% endblock %}
 
-    {% if request.path != '/login/' %}
+    {% if request.path != '/login/' and request.path != '/register/' %}
       {% include 'components/footer.html' %}
     {% endif %}
 
