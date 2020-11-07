@@ -94,27 +94,26 @@ def home(request):
         "estates": Estate.objects.filter(pk__in=recomendations),
         "estate_forms": EstateSearchForm()
     }
-    
+
     if request.POST:
         form = EstateSearchForm(request.POST)
-        filters = {}
+        params = "?search=true"
         if form.is_valid():
             lot_type = form.cleaned_data.get("lot_type")
             if lot_type:
-                filters.update({ "lot_type__iexact": lot_type })
+                params += f"&lot_type={lot_type}"
             bedroom = form.cleaned_data.get("bedroom")
             if bedroom:
-                filters.update({ "bedroom": bedroom })
+                params += f"&bedroom={bedroom}"
             bathroom = form.cleaned_data.get("bathroom")
             if bathroom:
-                filters.update({ "bathroom": bathroom })
+                params += f"&bathroom={bathroom}"
             start_price = form.cleaned_data.get("start_price")
             end_price = form.cleaned_data.get("end_price")
             if start_price and end_price:
-                filters.update({"price__range": (start_price, end_price) })
+                params += f"&start_price={start_price}&end_price={end_price}"
             
-            estate = Estate.objects.filter(**filters)
-            context["query_results"] = estate
+            return redirect(f"estate_list{params}")
 
     return render(request, templates, context)
 
@@ -191,28 +190,49 @@ def estate_detail(request, pk):
         "title": "Detail Rumah",
         "menu": "estate_detail_menu",
         "estate": estate,
-        # "estate_forms": EstateSearchForm()
+        "estate_forms": EstateSearchForm()
     }
-    
-    # if request.POST:
-    #     form = EstateSearchForm(request.POST)
-    #     filters = {}
-    #     if form.is_valid():
-    #         lot_type = form.cleaned_data.get("lot_type")
-    #         if lot_type:
-    #             filters.update({ "lot_type__iexact": lot_type })
-    #         bedroom = form.cleaned_data.get("bedroom")
-    #         if bedroom:
-    #             filters.update({ "bedroom": bedroom })
-    #         bathroom = form.cleaned_data.get("bathroom")
-    #         if bathroom:
-    #             filters.update({ "bathroom": bathroom })
-    #         start_price = form.cleaned_data.get("start_price")
-    #         end_price = form.cleaned_data.get("end_price")
-    #         if start_price and end_price:
-    #             filters.update({"price__range": (start_price, end_price) })
-            
-    #         estate = Estate.objects.filter(**filters)
-    #         context["query_results"] = estate
+
+    return render(request, templates, context)
+
+
+def estate_list(request):
+    """
+    docstring
+    """
+    estate = Estate.objects.all()
+    templates = "estate/estate_list.html"
+    context = {
+        "title": "Daftar Properti",
+        "menu": "estate_list_menu",
+        "estate_forms": EstateSearchForm()
+    }
+
+    filters = {}
+    if request.GET.get("search"):
+        if request.GET.get("lot_type"):
+            filters.update({ "lot_type__iexact": request.GET.get("lot_type") })
+        
+        if request.GET.get("bedroom"):
+            filters.update({ "bedroom": request.GET.get("bedroom") })
+        
+        if request.GET.get("bathroom"):
+            filters.update({ "bathroom": request.GET.get("bathroom") })
+        
+        if request.GET.get("start_price") and request.GET.get("end_price"):
+            filters.update({
+                "price__range": (
+                    request.GET.get("start_price"), request.GET.get("end_price")
+                )
+            })
+    elif request.GET.get("type"):
+        filters.update({ "lot_type": request.GET.get("type") })
+
+    if filters:
+        estate = Estate.objects.filter(**filters)
+        context.update({
+            "title": "Hasil Pencarian",
+            "estate": estate
+        })
 
     return render(request, templates, context)

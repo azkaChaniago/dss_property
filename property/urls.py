@@ -8,5 +8,6 @@ urlpatterns = [
     path('logout/', logout_client, name="logout_client"),
     path('register/', register_client, name="register_client"),
     path('', home, name="home"),
+    path('estate_list/', estate_list, name="estate_list"),
     path('estate_detail/<int:pk>/', estate_detail, name="estate_detail"),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
