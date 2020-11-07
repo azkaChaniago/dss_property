@@ -1,4 +1,5 @@
 import logging
+from .utilities import get_recomendation, calc_loan_weight
 from .forms import LoginForm, CustomerForm, EstateSearchForm
 from .models import Customer, Estate, EstateDetails, EstateGallery
 from django.contrib.auth import authenticate, logout, login
@@ -59,10 +60,39 @@ def home(request):
         return redirect('logout_client')
 
     templates = "home.html"
+    customer = request.user.customer
+    
+    """
+    Pre-processing data and requirements
+    to calculate recomendation using
+    Simple Additive Weighting Algorithm
+    """
+    estate_range = Estate.objects.filter(
+        price__gte=customer.start_budget,
+        price__lte=customer.end_budget
+    )
+    
+    criteria = []
+    for est in estate_range:
+        criteria.append({
+            "id": est.id,
+            "price": est.price,
+            "job": customer.job_ktp.weight,
+            "salary": customer.salary,
+            "loan_state": calc_loan_weight(customer.loan_state)
+        })
+
+    recomendations = get_recomendation(criteria)
+    print(recomendations)
+    """
+    Finding calculation is finished here
+    the rest is orm the recomendations id into Estate model
+    """
+
     context = {
         "title": "Welcome",
         "menu": "home_menu",
-        "estates": Estate.objects.all().order_by('created_at', 'name'),
+        "estates": Estate.objects.filter(pk__in=recomendations),
         "estate_forms": EstateSearchForm()
     }
     
