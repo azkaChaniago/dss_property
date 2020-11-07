@@ -83,7 +83,6 @@ def home(request):
         })
 
     recomendations = get_recomendation(criteria)
-    print(recomendations)
     """
     Finding calculation is finished here
     the rest is orm the recomendations id into Estate model

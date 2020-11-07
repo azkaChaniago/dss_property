@@ -28,7 +28,9 @@
                     {{ est.name }}
                   </h1>
                   <p class="intro-subtitle intro-price">
-                    <a href="#"><span class="price-a">harga | Rp {% calculate_price est.price %}</span></a>
+                    <a href="{% url 'estate_detail' est.pk %}">
+                      <span class="price-a">harga | Rp {% calculate_price est.price %}</span>
+                    </a>
                   </p>
                 </div>
               </div>
@@ -45,71 +47,16 @@
 <!--/ Services Star /-->
 <section class="section-services section-t8">
   <div class="container">
+    {% if query_results %}
     <div class="row">
       <div class="col-md-12">
         <div class="title-wrap d-flex justify-content-between">
           <div class="title-box">
-            <h2 class="title-a">Pilih Kriteria</h2>
+            <h2 class="title-a">Hasil Pencarian</h2>
           </div>
         </div>
       </div>
     </div>
-    <div class="row">
-      <form class="form-a col-8 offset-2" method="POST" action="{% url 'home' %}">
-        {% csrf_token %}
-        <div class="row">
-          <div class="col-12">
-            <div class="form-group">
-              <label for="{% render_field estate_forms.lot_type.id_for_label %}">
-                {% render_field estate_forms.lot_type.label %}
-              </label>
-              {% render_field estate_forms.lot_type class+='form-control' %}
-            </div>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-6">
-            <div class="form-group">
-              <label for="{% render_field estate_forms.start_price.id_for_label %}">
-                {% render_field estate_forms.start_price.label %}
-              </label>
-              {% render_field estate_forms.start_price class+='form-control' %}
-            </div>
-          </div>
-          <div class="col-6">
-            <div class="form-group">
-              <label for="{% render_field estate_forms.end_price.id_for_label %}">
-                {% render_field estate_forms.end_price.label %}
-              </label>
-              {% render_field estate_forms.end_price class+='form-control' %}
-            </div>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-6">
-            <div class="form-group">
-              <label for="{% render_field estate_forms.bedroom.id_for_label %}">
-                {% render_field estate_forms.bedroom.label %}
-              </label>
-              {% render_field estate_forms.bedroom class+='form-control' %}
-            </div>
-          </div>
-          <div class="col-6">
-            <div class="form-group">
-              <label for="{% render_field estate_forms.bathroom.id_for_label %}">
-                {% render_field estate_forms.bathroom.label %}
-              </label>
-              {% render_field estate_forms.bathroom class+='form-control' %}
-            </div>
-          </div>
-        </div>
-        <div class="col-md-12">
-          <button type="submit" class="btn btn-b">Search Property</button>
-        </div>
-      </form>
-    </div>
-    <br>
-    {% if query_results %}
     <div class="row">
       {% for res in query_results%}
       <div class="carousel-item-b">
@@ -121,7 +68,7 @@
             <div class="card-overlay-a-content">
               <div class="card-header-a">
                 <h2 class="card-title-a">
-                  <a href="property-single.html"
+                  <a href="{% url 'estate_detail' res.pk %}"
                     >{{ res.lot_type }} <br />
                     {{ res.name }}</a
                   >
@@ -131,7 +78,7 @@
                 <div class="price-box d-flex">
                   <span class="price-a">harga | Rp {% calculate_price res.price %}</span>
                 </div>
-                <a href="{% url 'estate_detail' res.id %}" class="link-a"
+                <a href="{% url 'estate_detail' res.pk %}" class="link-a"
                   >Click here to view
                   <span class="ion-ios-arrow-forward"></span>
                 </a>
@@ -175,7 +122,7 @@
             <h2 class="title-a">Property Terbaru</h2>
           </div>
           <div class="title-link">
-            <a href="property-grid.html"
+            <a href="#"
               >Semua Property
               <span class="ion-ios-arrow-forward"></span>
             </a>
@@ -194,7 +141,7 @@
             <div class="card-overlay-a-content">
               <div class="card-header-a">
                 <h2 class="card-title-a">
-                  <a href="property-single.html"
+                  <a href="{% url 'estate_detail' est.id %}"
                     >{{ est.lot_type }} <br />
                     {{ est.name }}</a
                   >
