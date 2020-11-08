@@ -13,6 +13,10 @@ class EstateGalleryInline(admin.TabularInline):
     model = EstateGallery
     extra = 0
 
+class EstateAmenityInline(admin.TabularInline):
+    model = EstateAmenity
+    extra = 0
+
 class EstateAdmin(admin.ModelAdmin):
     list_display = ("__str__", "locations", "state")
     list_filter = ("state", "lot_type")
@@ -29,7 +33,7 @@ class EstateAdmin(admin.ModelAdmin):
     )
 
     inlines = [
-        EstateDetailInline, EstateGalleryInline
+        EstateDetailInline, EstateGalleryInline, EstateAmenityInline
     ]
     
 admin.site.register(Estate, EstateAdmin)

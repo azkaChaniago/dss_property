@@ -187,8 +187,13 @@ class EstateGallery(models.Model):
 
 
 class EstateAmenity(models.Model):
-    estate = models.ManyToManyField(Estate)
-    name = models.CharField(default="", max_length=50)
+    estate = models.ForeignKey(Estate, on_delete=models.CASCADE)
+    name = models.CharField(
+        default="",
+        max_length=50,
+        blank=True,
+        null=True
+    )
 
     def __str__(self):
-        return f"{self.estate.name} {self.name}"
+        return f"[ID:{self.estate.pk}] {self.estate.name} {self.name}"
