@@ -190,7 +190,10 @@ def estate_detail(request, pk):
         "title": "Detail Rumah",
         "menu": "estate_detail_menu",
         "estate": estate,
-        "estate_forms": EstateSearchForm()
+        "estate_forms": EstateSearchForm(),
+        "estate_gallery": estate.estategallery_set.all(),
+        "estate_amenity": estate.estateamenity_set.all(),
+        "estate_details": estate.estatedetails_set.all(),
     }
 
     return render(request, templates, context)

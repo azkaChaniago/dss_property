@@ -1,9 +1,6 @@
 from django.contrib import admin
 from .models import *
 
-admin.site.register(Customer)
-admin.site.register(EstateGallery)
-
 class EstateDetailInline(admin.TabularInline):
     model = EstateDetails
     extra = 0
@@ -13,9 +10,11 @@ class EstateGalleryInline(admin.TabularInline):
     model = EstateGallery
     extra = 0
 
+
 class EstateAmenityInline(admin.TabularInline):
     model = EstateAmenity
     extra = 0
+
 
 class EstateAdmin(admin.ModelAdmin):
     list_display = ("__str__", "locations", "state")
@@ -37,3 +36,12 @@ class EstateAdmin(admin.ModelAdmin):
     ]
     
 admin.site.register(Estate, EstateAdmin)
+
+
+class CustomerAdmin(admin.ModelAdmin):
+    list_display = ("__str__", "address", "phone")
+    list_filter = ("loan_state", "job_ktp")
+    list_per_page = 10
+    empty_value_display = "-kosong-"
+    
+admin.site.register(Customer, CustomerAdmin)

@@ -37,15 +37,11 @@
     <div class="row">
       <div class="col-sm-12">
         <div id="property-single-carousel" class="owl-carousel owl-arrow gallery-property">
+          {% for pic in estate_gallery %}
           <div class="carousel-item-b">
-            <img src="{% static 'img/slide-2.jpg' %}" alt="">
+            <img src="{{ pic.image.url }}" alt="">
           </div>
-          <div class="carousel-item-b">
-            <img src="{% static 'img/slide-3.jpg' %}" alt="">
-          </div>
-          <div class="carousel-item-b">
-            <img src="{% static 'img/slide-1.jpg' %}" alt="">
-          </div>
+          {% endfor %}
         </div>
         <div class="row justify-content-between">
           <div class="col-md-5 col-lg-4">
@@ -114,21 +110,42 @@
             <div class="row section-t3">
               <div class="col-sm-12">
                 <div class="title-box-d">
+                  <h3 class="title-d">Detail Cicilan</h3>
+                </div>
+              </div>
+            </div>
+            <div class="amenities-list color-text-a">
+              <table class="table table-striped">
+                <thead>
+                  <tr>
+                    <th style="text-align: center">Uang Muka</th>
+                    <th style="text-align: center">Tenor</th>
+                    <th style="text-align: center">Cicilan</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for item in estate_details %}
+                  <tr>
+                    <td style="text-align: center">{% set_currency 'IDR' 'id' item.down_payment %}</td>
+                    <td style="text-align: center">{{ item.tenor }}</td>
+                    <td style="text-align: center">{% set_currency 'IDR' 'id' item.installment %}</td>
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+            <div class="row section-t3">
+              <div class="col-sm-12">
+                <div class="title-box-d">
                   <h3 class="title-d">Fasilitas</h3>
                 </div>
               </div>
             </div>
             <div class="amenities-list color-text-a">
               <ul class="list-a no-margin">
-                <li>Balcony</li>
-                <li>Outdoor Kitchen</li>
-                <li>Cable Tv</li>
-                <li>Deck</li>
-                <li>Tennis Courts</li>
-                <li>Internet</li>
-                <li>Parking</li>
-                <li>Sun Room</li>
-                <li>Concrete Flooring</li>
+                {% for item in estate_amenity %}
+                <li>{{ item.name }}</li>
+                {% endfor %}
               </ul>
             </div>
           </div>
