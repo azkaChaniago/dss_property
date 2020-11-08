@@ -1,3 +1,4 @@
+import os
 from django.db import models
 from django.contrib.auth.models import User
 from django.db.models.signals import post_save
@@ -116,7 +117,8 @@ class Estate(models.Model):
         default="available",
         max_length=50,
         verbose_name="Status",
-        choices=PROPERTY_STATE
+        choices=PROPERTY_STATE,
+        blank=True
     )
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -150,11 +152,32 @@ class EstateGallery(models.Model):
         ("gallery", "Galeri"),
     )
 
+    def upload_path(self, filename):
+        lot_type = self.estate.lot_type.lower().replace(" ", "_")
+        estate_name = self.estate.name.lower().replace(" ", "_")
+        mark = self.estate.created_at.date()
+        dir_name = f"{lot_type}_{estate_name}_{mark}"
+        return f"media/{dir_name}/{filename}"
+
     estate = models.ForeignKey(Estate, on_delete=models.CASCADE)
-    image_type = models.CharField(max_length=50, choices=IMAGE_TYPES, default="")
-    image = models.ImageField(verbose_name="Gambar", upload_to="media/")
+    image_type = models.CharField(
+        max_length=50,
+        choices=IMAGE_TYPES,
+        default="",
+        blank=True,
+        null=True
+    )
+    image = models.ImageField(
+        verbose_name="Gambar",
+        upload_to=upload_path,
+        blank=True,
+        null=True
+    )
     description = models.CharField(
-        max_length=100, verbose_name="Deskripsi"
+        max_length=100,
+        verbose_name="Deskripsi",
+        blank=True,
+        null=True
     )
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
