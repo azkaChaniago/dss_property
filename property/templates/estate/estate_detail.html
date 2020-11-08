@@ -110,29 +110,23 @@
             <div class="row section-t3">
               <div class="col-sm-12">
                 <div class="title-box-d">
-                  <h3 class="title-d">Detail Cicilan</h3>
+                  <h3 class="title-d">Detail Pembayaran</h3>
                 </div>
               </div>
             </div>
-            <div class="amenities-list color-text-a">
-              <table class="table table-striped">
-                <thead>
-                  <tr>
-                    <th style="text-align: center">Uang Muka</th>
-                    <th style="text-align: center">Tenor</th>
-                    <th style="text-align: center">Cicilan</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {% for item in estate_details %}
-                  <tr>
-                    <td style="text-align: center">{% set_currency 'IDR' 'id' item.down_payment %}</td>
-                    <td style="text-align: center">{{ item.tenor }}</td>
-                    <td style="text-align: center">{% set_currency 'IDR' 'id' item.installment %}</td>
-                  </tr>
-                  {% endfor %}
-                </tbody>
-              </table>
+            <div class="payment-detail">
+              <div class="row">
+                <div class="col-4"><span>Uang Muka</span></div>
+                <div class="col-4"><span>Tenor</span></div>
+                <div class="col-4"><span>Cicilan</span></div>
+              </div>
+              {% for item in estate_details %}
+              <div class="row">
+                <div class="col-4">{% set_currency 'IDR' 'id' item.down_payment %}</div>
+                <div class="col-4">{{ item.tenor }}</div>
+                <div class="col-4">{% set_currency 'IDR' 'id' item.installment %}</div>
+              </div class="row">
+              {% endfor %}
             </div>
             <div class="row section-t3">
               <div class="col-sm-12">
@@ -193,64 +187,8 @@
           </div>
         </div>
         <div class="row">
-          <div class="col-md-6 col-lg-4 offset-lg-2">
-            <div class="property-agent">
-              <h4 class="title-agent">Anabella Geller</h4>
-              <p class="color-text-a">
-                Nulla porttitor accumsan tincidunt. Vestibulum ac diam sit amet quam vehicula elementum sed sit amet
-                dui. Quisque velit nisi,
-                pretium ut lacinia in, elementum id enim.
-              </p>
-              <ul class="list-unstyled">
-                <li class="d-flex justify-content-between">
-                  <strong>Phone:</strong>
-                  <span class="color-text-a">(222) 4568932</span>
-                </li>
-                <li class="d-flex justify-content-between">
-                  <strong>Mobile:</strong>
-                  <span class="color-text-a">777 287 378 737</span>
-                </li>
-                <li class="d-flex justify-content-between">
-                  <strong>Email:</strong>
-                  <span class="color-text-a">annabella@example.com</span>
-                </li>
-                <li class="d-flex justify-content-between">
-                  <strong>Skype:</strong>
-                  <span class="color-text-a">Annabela.ge</span>
-                </li>
-              </ul>
-              <div class="socials-a">
-                <ul class="list-inline">
-                  <li class="list-inline-item">
-                    <a href="#">
-                      <i class="fa fa-facebook" aria-hidden="true"></i>
-                    </a>
-                  </li>
-                  <li class="list-inline-item">
-                    <a href="#">
-                      <i class="fa fa-twitter" aria-hidden="true"></i>
-                    </a>
-                  </li>
-                  <li class="list-inline-item">
-                    <a href="#">
-                      <i class="fa fa-instagram" aria-hidden="true"></i>
-                    </a>
-                  </li>
-                  <li class="list-inline-item">
-                    <a href="#">
-                      <i class="fa fa-pinterest-p" aria-hidden="true"></i>
-                    </a>
-                  </li>
-                  <li class="list-inline-item">
-                    <a href="#">
-                      <i class="fa fa-dribbble" aria-hidden="true"></i>
-                    </a>
-                  </li>
-                </ul>
-              </div>
-            </div>
           </div>
-          <div class="col-md-6 col-lg-4">
+          <div class="col-md-6 offset-md-3 col-lg-6 offset-lg-3">
             <div class="property-contact">
               <form class="form-a">
                 <div class="row">

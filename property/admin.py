@@ -23,10 +23,11 @@ class EstateAdmin(admin.ModelAdmin):
     empty_value_display = "-kosong-"
     fields = (
         "name",
-        ("lot_type", "price"),
-        ("lot_length", "lot_width"),
-        ("bedroom", "bathroom"),
-        ("picture", "state"),
+        "lot_type",
+        ("bathroom", "lot_length"),
+        ("bedroom", "lot_width"),
+        ("state", "price"),
+        "picture",
         "locations",
         "description"
     )

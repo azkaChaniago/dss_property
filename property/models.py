@@ -52,8 +52,10 @@ class Customer(models.Model):
         null=True,
         blank=True
     )
-    salary = models.FloatField(
+    salary = models.DecimalField(
         default=0.00,
+        max_digits=15,
+        decimal_places=2,
         verbose_name="Gaji",
         blank=True,
         null=True
@@ -70,15 +72,19 @@ class Customer(models.Model):
         verbose_name="Status Pinjaman",
         choices=LOAN_STATE
     )
-    start_budget = models.FloatField(
+    start_budget = models.DecimalField(
         default=0.00,
         verbose_name="Harga Awal",
+        max_digits=18,
+        decimal_places=2,
         blank=True,
         null=True
     )
-    end_budget = models.FloatField(
+    end_budget = models.DecimalField(
         default=0.00,
         verbose_name="Harga Akhir",
+        max_digits=18,
+        decimal_places=2,
         blank=True,
         null=True
     )
@@ -100,7 +106,12 @@ class Estate(models.Model):
     )
     lot_length = models.FloatField(verbose_name="Panjang")
     lot_width = models.FloatField(verbose_name="Lebar")
-    price = models.FloatField(verbose_name="Harga")
+    price = models.DecimalField(
+        default=0.00,
+        verbose_name="Harga",
+        max_digits=18,
+        decimal_places=2
+    )
     description = models.TextField(
         default="", verbose_name="Deskripsi"
     )
@@ -129,14 +140,22 @@ class Estate(models.Model):
 
 class EstateDetails(models.Model):
     estate = models.ForeignKey(Estate, on_delete=models.CASCADE)
-    down_payment = models.FloatField(
-        default=0.00, blank=True, null=True
+    down_payment = models.DecimalField(
+        default=0.00,
+        max_digits=18,
+        decimal_places=2,
+        blank=True,
+        null=True
     )
     tenor = models.IntegerField(
         default=0, blank=True, null=True
     )
-    installment = models.FloatField(
-        default=0.00, blank=True, null=True
+    installment = models.DecimalField(
+        default=0.00,
+        max_digits=18,
+        decimal_places=2,
+        blank=True,
+        null=True
     )
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -197,3 +216,45 @@ class EstateAmenity(models.Model):
 
     def __str__(self):
         return f"[ID:{self.estate.pk}] {self.estate.name} {self.name}"
+
+
+class Purchase(models.Model):
+    PAYMENT_STATE = (
+        ("draft", "Draft"),
+        ("paid", "Paid"),
+        ("cancel", "Cancel"),
+    )
+
+    cutomer = models.ForeignKey(
+        Customer, on_delete=models.CASCADE, verbose_name="Kustomer"
+    )
+    estate = models.ForeignKey(
+        Estate, on_delete=models.CASCADE, verbose_name="Properti"
+    )
+    down_payment = models.DecimalField(
+        default=0.00,
+        max_digits=18,
+        decimal_places=2,
+        verbose_name="Uang Muka"
+    )
+    state = models.CharField(
+        default="draft",
+        max_length=20,
+        choices=PAYMENT_STATE,
+        verbose_name="Status"
+    )
+    tenor = models.IntegerField(default=1, verbose_name="Tenor")
+    installments = models.DecimalField(
+        default=0.00,
+        max_digits=18,
+        decimal_places=2,
+        verbose_name="Angsuran"
+    )
+    
+    def __str__(self):
+        return f"{self.customer.name} - [{self.estate.name}]"
+    
+    def save(self, *args, **kwargs):
+        if not self.customer or self.estate:
+            raise ValueError("Customer or Estate is not selected!")
+        super(Purchase, self).save(*args, **kwargs)

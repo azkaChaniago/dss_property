@@ -1,3 +1,8 @@
 .owl-carousel .owl-stage-outer {
   max-height: 50vh;
 }
+
+.payment-detail span {
+  font-size: 1.2rem;
+  font-weight: 500;
+}
