@@ -250,9 +250,27 @@ class Purchase(models.Model):
         decimal_places=2,
         verbose_name="Angsuran"
     )
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
     
     def __str__(self):
-        return f"{self.customer.name} - [{self.estate.name}]"
+        customer = self.customer.fullname.split(" ")
+        customer_code = ""
+        for name in customer:
+            customer_name += name[0].upper()
+        if len(customer_code) == 2:
+            customer_code += customer[1][1].upper()
+        elif len(customer_code) == 1:
+            customer_code += customer[0][1].upper()
+            customer_code += customer[0][2].upper()
+        
+        estate_code = self.estate.name.split(" ")
+        estate_code = "".join([est[0].upper() for est in estate_code])
+
+        init_date = self.created_at.date().strftime('%Y-%m-%d')
+        init_date = init_date.replace("-", "")
+
+        return f"{customer_code}/{estate_code}/{init_date}"
     
     def save(self, *args, **kwargs):
         if not self.customer or self.estate:
