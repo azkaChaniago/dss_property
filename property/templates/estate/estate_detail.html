@@ -150,7 +150,11 @@
     <div class="row">
       <div class="col-md-12">
         <div class="row section-t3 pull-right">
+          {% if estate.state == 'booked' %}
+          <a href="{% url 'purchase_form' estate.pk %}" class="btn btn-a">Lunasi</a>
+          {% elif estate.state == 'available' %}
           <a href="{% url 'purchase_form' estate.pk %}" class="btn btn-a">Transaksi</a>
+          {% endif %}
         </div>
       </div>
     </div>

@@ -3,7 +3,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 from django.dispatch import receiver
-
+from django.utils import timezone
 
 class Profession(models.Model):
     profession = models.CharField(
@@ -225,11 +225,14 @@ class Purchase(models.Model):
         ("cancel", "Cancel"),
     )
 
-    cutomer = models.ForeignKey(
+    customer = models.ForeignKey(
         Customer, on_delete=models.CASCADE, verbose_name="Kustomer"
     )
     estate = models.ForeignKey(
         Estate, on_delete=models.CASCADE, verbose_name="Properti"
+    )
+    down_payment_id = models.ForeignKey(
+        EstateDetails, on_delete=models.CASCADE
     )
     down_payment = models.DecimalField(
         default=0.00,
@@ -250,6 +253,12 @@ class Purchase(models.Model):
         decimal_places=2,
         verbose_name="Angsuran"
     )
+    proof = models.ImageField(
+        upload_to="media/payments/",
+        verbose_name="Bukti Pembayaran",
+        blank=True,
+        null=True
+    )
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     
@@ -257,7 +266,7 @@ class Purchase(models.Model):
         customer = self.customer.fullname.split(" ")
         customer_code = ""
         for name in customer:
-            customer_name += name[0].upper()
+            customer_code += name[0].upper()
         if len(customer_code) == 2:
             customer_code += customer[1][1].upper()
         elif len(customer_code) == 1:
@@ -267,12 +276,12 @@ class Purchase(models.Model):
         estate_code = self.estate.name.split(" ")
         estate_code = "".join([est[0].upper() for est in estate_code])
 
-        init_date = self.created_at.date().strftime('%Y-%m-%d')
+        init_date = timezone.now().strftime('%Y-%m-%d')
         init_date = init_date.replace("-", "")
 
         return f"{customer_code}/{estate_code}/{init_date}"
     
     def save(self, *args, **kwargs):
-        if not self.customer or self.estate:
+        if not self.customer or not self.estate:
             raise ValueError("Customer or Estate is not selected!")
         super(Purchase, self).save(*args, **kwargs)

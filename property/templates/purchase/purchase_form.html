@@ -111,6 +111,7 @@
                     <div class="form-group">
                       <label for="customer">Nama Customer</label>
                       <input type="text"
+                        name="customer"
                         class="form-control form-control-lg form-control-a"
                         id="customer"
                         value="{{ customer.fullname }}"
@@ -121,6 +122,7 @@
                     <div class="form-group">
                       <label for="estate">Nama Property</label>
                       <input type="text"
+                        name="estate"
                         class="form-control form-control-lg form-control-a"
                         id="estate"
                         value="[{{ estate.lot_type }}] {{ estate.name }}"
@@ -133,10 +135,18 @@
                       <select name="down_payment"
                         id="down_payment"
                         class="form-control form-control-lg form-a">
+                        
                         <option value="">-</option>
-                        {% for est in estate_details %}
-                        <option value="{{ est.pk }}">{{ est.down_payment }}</option>
-                        {% endfor %}
+                        {% if purchase.state == 'booked' %}
+                          {% for est in estate_details %}
+                          <option value="{{ purchase.down_payment_id }}" selected>{{ purchase.down_payment }}</option>
+                          {% endfor %}
+                        {% else %}
+                          {% for est in estate_details %}
+                          <option value="{{ est.pk }}">{{ est.down_payment }}</option>
+                          {% endfor %}
+                        {%endif%}
+
                       </select>
                     </div>
                   </div>
@@ -146,6 +156,7 @@
                       <input name="tenor"
                         id="tenor"
                         class="form-control form-control-lg form-a"
+                        value="{{ purchase.tenor }}"
                         readonly />
                     </div>
                   </div>
@@ -155,12 +166,25 @@
                       <input name="installment"
                         id="installment"
                         class="form-control form-control-lg form-a"
+                        value="{{ purchase.installment }}"
                         readonly />
                     </div>
                   </div>
-                  
+                  <div class="col-md-12 mb-3">
+                    <div class="form-group">
+                      <label for="proof">Bukti pembayaran</label>
+                      <input type="file"
+                        name="proof"
+                        class="form-control form-control-lg form-control-a"
+                        id="proof">
+                      {% if purchase.proof %}
+                      <a href="{{ purchase.proof.url }}">{{ purchase.proof.url }}</a>
+                      {% endif %}
+                    </div>
+                  </div>
+
                   <div class="col-md-12">
-                    <button type="submit" class="btn btn-a">Masuk</button>
+                    <button type="submit" class="btn btn-a">Bayar</button>
                   </div>
                 </div>
               </form>

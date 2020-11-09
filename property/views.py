@@ -1,7 +1,7 @@
 import logging
 from .utilities import get_recomendation, calc_loan_weight
 from .forms import LoginForm, CustomerForm, EstateSearchForm
-from .models import Customer, Estate, EstateDetails, EstateGallery
+from .models import Customer, Estate, EstateDetails, EstateGallery, Purchase
 from django.contrib.auth import authenticate, logout, login
 from django.contrib.auth.models import User
 from django.http import JsonResponse
@@ -246,6 +246,11 @@ def estate_list(request):
 def purchase_form(request, pk=None):
     customer = request.user.customer
     estate = get_object_or_404(Estate, pk=pk)
+    purchase = Purchase.objects.filter(
+        customer_id=customer.pk,
+        estate_id=estate.pk,
+        state="booked"
+    ).first()
 
     templates = "purchase/purchase_form.html"
     context = {
@@ -253,11 +258,35 @@ def purchase_form(request, pk=None):
         "menu": "purchase_form_menu",
         "estate": estate,
         "customer": customer,
-        "estate_details": estate.estatedetails_set.all()
+        "estate_details": estate.estatedetails_set.all(),
+        "purchase": purchase,
     }
 
     if request.POST:
-        pass    
+        purchase_state = "draft"
+        estate_state = "booked"
+        if request.FILES.get("proof"):
+            purchase_state = "paid"
+            estate_state = "sold"
+        
+        dp_id = request.POST.get("down_payment")
+        estate_detail = EstateDetails.objects.get(pk=dp_id)
+
+        purchase = Purchase(
+            customer=customer,
+            estate=estate,
+            proof=request.FILES.get("proof"),
+            down_payment_id=estate_detail,
+            down_payment=estate_detail.down_payment,
+            tenor=estate_detail.tenor,
+            installments=estate_detail.installment,
+            state=purchase_state
+        )
+        purchase.save()
+
+        estate.state = estate_state
+        estate.save()
+        return redirect("estate_detail", pk=estate.pk)
 
     return render(request, templates, context)
 
