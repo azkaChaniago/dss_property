@@ -46,3 +46,5 @@ class CustomerAdmin(admin.ModelAdmin):
     empty_value_display = "-kosong-"
     
 admin.site.register(Customer, CustomerAdmin)
+
+admin.site.register(Purchase)

@@ -103,7 +103,11 @@
               </div>
             </div>
             <div class="property-description">
-              <form class="form" action="{% url 'purchase_form' estate.pk %}" method="POST" role="form">
+              <form class="form"
+                action="{% url 'purchase_form' estate.pk %}"
+                method="POST"
+                role="form"
+                enctype="multipart/form-data">
                 {% csrf_token %}
                 <div id="errormessage">{{ message }}</div>
                 <div class="row mt-3">
@@ -134,15 +138,14 @@
                       <label for="down_payment">Uang Muka</label>
                       <select name="down_payment"
                         id="down_payment"
-                        class="form-control form-control-lg form-a">
+                        class="form-control form-control-lg form-a"
+                        {% if purchase.state == 'draft' %} readonly {% endif %}>
                         
-                        <option value="">-</option>
-                        {% if purchase.state == 'booked' %}
-                          {% for est in estate_details %}
-                          <option value="{{ purchase.down_payment_id }}" selected>{{ purchase.down_payment }}</option>
-                          {% endfor %}
+                        {% if purchase.state == 'draft' %}
+                          <option value="{{ purchase.down_payment_id.id }}" selected>{{ purchase.down_payment }}</option>
                         {% else %}
                           {% for est in estate_details %}
+                          <option value="">-</option>
                           <option value="{{ est.pk }}">{{ est.down_payment }}</option>
                           {% endfor %}
                         {%endif%}
@@ -166,7 +169,7 @@
                       <input name="installment"
                         id="installment"
                         class="form-control form-control-lg form-a"
-                        value="{{ purchase.installment }}"
+                        value="{{ purchase.installments }}"
                         readonly />
                     </div>
                   </div>

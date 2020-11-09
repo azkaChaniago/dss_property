@@ -249,7 +249,7 @@ def purchase_form(request, pk=None):
     purchase = Purchase.objects.filter(
         customer_id=customer.pk,
         estate_id=estate.pk,
-        state="booked"
+        state="draft"
     ).first()
 
     templates = "purchase/purchase_form.html"
@@ -263,29 +263,39 @@ def purchase_form(request, pk=None):
     }
 
     if request.POST:
-        purchase_state = "draft"
-        estate_state = "booked"
-        if request.FILES.get("proof"):
-            purchase_state = "paid"
-            estate_state = "sold"
-        
-        dp_id = request.POST.get("down_payment")
-        estate_detail = EstateDetails.objects.get(pk=dp_id)
+        if purchase:
+            if not request.FILES.get("proof"):
+                logger.warning("Payment Proof is not uploaded!")
+            purchase.proof = request.FILES.get("proof")
+            purchase.state = "paid"
+            purchase.save()
 
-        purchase = Purchase(
-            customer=customer,
-            estate=estate,
-            proof=request.FILES.get("proof"),
-            down_payment_id=estate_detail,
-            down_payment=estate_detail.down_payment,
-            tenor=estate_detail.tenor,
-            installments=estate_detail.installment,
-            state=purchase_state
-        )
-        purchase.save()
+            estate.state = "sold"
+            estate.save()
+        else:
+            purchase_state = "draft"
+            estate_state = "booked"
+            if request.FILES.get("proof"):
+                purchase_state = "paid"
+                estate_state = "sold"
+            
+            dp_id = request.POST.get("down_payment")
+            estate_detail = EstateDetails.objects.get(pk=dp_id)
 
-        estate.state = estate_state
-        estate.save()
+            purchase = Purchase(
+                customer=customer,
+                estate=estate,
+                proof=request.FILES.get("proof"),
+                down_payment_id=estate_detail,
+                down_payment=estate_detail.down_payment,
+                tenor=estate_detail.tenor,
+                installments=estate_detail.installment,
+                state=purchase_state
+            )
+            purchase.save()
+
+            estate.state = estate_state
+            estate.save()
         return redirect("estate_detail", pk=estate.pk)
 
     return render(request, templates, context)
