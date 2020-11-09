@@ -6,3 +6,4 @@ dss_property/__pycache__
 property/__pycache__
 property/migrations/
 property/migrations/__pycache__
+media/*
