@@ -1,9 +1,10 @@
 import logging
 from .utilities import get_recomendation, calc_loan_weight
-from .forms import LoginForm, CustomerForm, EstateSearchForm, PurchaseForm
+from .forms import LoginForm, CustomerForm, EstateSearchForm
 from .models import Customer, Estate, EstateDetails, EstateGallery
 from django.contrib.auth import authenticate, logout, login
 from django.contrib.auth.models import User
+from django.http import JsonResponse
 from django.shortcuts import render, redirect, reverse, get_object_or_404
 
 logger = logging.getLogger(__name__)
@@ -184,11 +185,6 @@ def estate_detail(request, pk):
     """
     estate = get_object_or_404(Estate, pk=pk)
 
-    # customer = request.user.customer
-    # estate = Estate.objects.get(pk=pk)
-
-    # PurchaseForm()
-
     logger.info(f"{request.user} mencoba masuk")
     templates = "estate/estate_detail.html"
     context = {
@@ -199,7 +195,6 @@ def estate_detail(request, pk):
         "estate_gallery": estate.estategallery_set.all(),
         "estate_amenity": estate.estateamenity_set.all(),
         "estate_details": estate.estatedetails_set.all(),
-        "purchase_forms": PurchaseForm()
     }
 
     return render(request, templates, context)
@@ -246,3 +241,38 @@ def estate_list(request):
         })
     
     return render(request, templates, context)
+
+
+def purchase_form(request, pk=None):
+    customer = request.user.customer
+    estate = get_object_or_404(Estate, pk=pk)
+
+    templates = "purchase/purchase_form.html"
+    context = {
+        "title": "Form Pembelian",
+        "menu": "purchase_form_menu",
+        "estate": estate,
+        "customer": customer,
+        "estate_details": estate.estatedetails_set.all()
+    }
+
+    if request.POST:
+        pass    
+
+    return render(request, templates, context)
+
+def get_detail_purchasement(request, pk):
+    try:
+        detail = EstateDetails.objects.get(pk=pk)
+        response = {
+            "tenor": detail.tenor,
+            "installments": detail.installment,
+        }
+    except Exception as err:
+        logger.error(err)
+        response = {
+            "tenor": 0,
+            "installments": 0.00,
+        }
+
+    return JsonResponse(response, safe=False)

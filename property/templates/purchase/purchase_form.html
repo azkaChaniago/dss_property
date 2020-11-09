@@ -98,59 +98,74 @@
             <div class="row">
               <div class="col-sm-12">
                 <div class="title-box-d">
-                  <h3 class="title-d">Deskripsi Property</h3>
+                  <h3 class="title-d">Form Transaksi</h3>
                 </div>
               </div>
             </div>
             <div class="property-description">
-              <p class="description color-text-a">
-                {{ estate.description }}
-              </p>
-            </div>
-            <div class="row section-t3">
-              <div class="col-sm-12">
-                <div class="title-box-d">
-                  <h3 class="title-d">Detail Pembayaran</h3>
+              <form class="form" action="{% url 'purchase_form' estate.pk %}" method="POST" role="form">
+                {% csrf_token %}
+                <div id="errormessage">{{ message }}</div>
+                <div class="row mt-3">
+                  <div class="col-md-12 mb-3">
+                    <div class="form-group">
+                      <label for="customer">Nama Customer</label>
+                      <input type="text"
+                        class="form-control form-control-lg form-control-a"
+                        id="customer"
+                        value="{{ customer.fullname }}"
+                        readonly>
+                    </div>
+                  </div>
+                  <div class="col-md-12 mb-3">
+                    <div class="form-group">
+                      <label for="estate">Nama Property</label>
+                      <input type="text"
+                        class="form-control form-control-lg form-control-a"
+                        id="estate"
+                        value="[{{ estate.lot_type }}] {{ estate.name }}"
+                        readonly>
+                    </div>
+                  </div>
+                  <div class="col-md-12 mb-3">
+                    <div class="form-group">
+                      <label for="down_payment">Uang Muka</label>
+                      <select name="down_payment"
+                        id="down_payment"
+                        class="form-control form-control-lg form-a">
+                        <option value="">-</option>
+                        {% for est in estate_details %}
+                        <option value="{{ est.pk }}">{{ est.down_payment }}</option>
+                        {% endfor %}
+                      </select>
+                    </div>
+                  </div>
+                  <div class="col-md-6 mb-3">
+                    <div class="form-group">
+                      <label for="tenor">Tenor</label>
+                      <input name="tenor"
+                        id="tenor"
+                        class="form-control form-control-lg form-a"
+                        readonly />
+                    </div>
+                  </div>
+                  <div class="col-md-6 mb-3">
+                    <div class="form-group">
+                      <label for="installment">Angsuran</label>
+                      <input name="installment"
+                        id="installment"
+                        class="form-control form-control-lg form-a"
+                        readonly />
+                    </div>
+                  </div>
+                  
+                  <div class="col-md-12">
+                    <button type="submit" class="btn btn-a">Masuk</button>
+                  </div>
                 </div>
-              </div>
-            </div>
-            <div class="payment-detail">
-              <div class="row">
-                <div class="col-4"><span>Uang Muka</span></div>
-                <div class="col-4"><span>Tenor</span></div>
-                <div class="col-4"><span>Cicilan</span></div>
-              </div>
-              {% for item in estate_details %}
-              <div class="row">
-                <div class="col-4">{% set_currency 'IDR' 'id' item.down_payment %}</div>
-                <div class="col-4">{{ item.tenor }}</div>
-                <div class="col-4">{% set_currency 'IDR' 'id' item.installment %}</div>
-              </div>
-              {% endfor %}
-            </div>
-            <div class="row section-t3">
-              <div class="col-sm-12">
-                <div class="title-box-d">
-                  <h3 class="title-d">Fasilitas</h3>
-                </div>
-              </div>
-            </div>
-            <div class="amenities-list color-text-a">
-              <ul class="list-a no-margin">
-                {% for item in estate_amenity %}
-                <li>{{ item.name }}</li>
-                {% endfor %}
-              </ul>
+              </form>
             </div>
           </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="row">
-      <div class="col-md-12">
-        <div class="row section-t3 pull-right">
-          <a href="{% url 'purchase_form' estate.pk %}" class="btn btn-a">Transaksi</a>
         </div>
       </div>
     </div>
@@ -159,5 +174,24 @@
   </div>
 </section>
 <!--/ Property Single End /-->
+<script>
+  const downPayment = document.querySelector('#down_payment');
+  const tenor = document.querySelector('#tenor');
+  const installment = document.querySelector('#installment');
 
+  document.addEventListener('DOMContentLoaded', () => {
+
+    downPayment.addEventListener('change', () => {
+      let idDetail = parseInt(downPayment.value);
+      fetch(`/get_detail_purchasement/${idDetail}`)
+        .then(res => res.json())
+        .then(data => {
+          tenor.value = data.tenor;
+          installment.value =  data.installments;
+        })
+        .catch(err => console.error(err));
+    });
+
+  });
+</script>
 {% endblock %}

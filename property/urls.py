@@ -10,4 +10,7 @@ urlpatterns = [
     path('', home, name="home"),
     path('estate_list/', estate_list, name="estate_list"),
     path('estate_detail/<int:pk>/', estate_detail, name="estate_detail"),
+    path('purchase_form/', purchase_form, name="purchase_form"),
+    path('purchase_form/<int:pk>/', purchase_form, name="purchase_form"),
+    path('get_detail_purchasement/<int:pk>/', get_detail_purchasement, name="get_detail_purchasement"),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

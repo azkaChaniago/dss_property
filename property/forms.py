@@ -138,9 +138,3 @@ class EstateSearchForm(forms.Form):
             }
         )
     )
-
-
-class PurchaseForm(forms.Form):
-    down_payment = forms.ModelMultipleChoiceField(
-        queryset=EstateDetails.objects.all()
-    )
