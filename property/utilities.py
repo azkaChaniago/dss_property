@@ -64,10 +64,10 @@ def normalize(matrix, maxmin):
 
 def calculate_rank(value):
     total = (
-        (WEIGHT["job"] * value["job"]) +
-        (WEIGHT["salary"] * value["salary"]) +
-        (WEIGHT["loan_state"] * value["loan_state"]) +
-        (WEIGHT["price"] * value["price"])
+        (WEIGHT["job"] * float(value["job"])) +
+        (WEIGHT["salary"] * float(value["salary"])) +
+        (WEIGHT["loan_state"] * float(value["loan_state"])) +
+        (WEIGHT["price"] * float(value["price"]))
     )
 
     return {

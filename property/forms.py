@@ -1,7 +1,7 @@
 from django import forms
-from django.forms import TextInput, Textarea, IntegerField, FloatField
+from django.forms import TextInput, Textarea, IntegerField, FloatField, DecimalField
 from django.contrib.auth.models import User
-from .models import Customer, Estate, Profession
+from .models import Customer, Estate, Profession, Purchase, EstateDetails
 
 class LoginForm(forms.Form):
     username = forms.CharField(
@@ -70,11 +70,11 @@ class CustomerForm(forms.Form):
         label="Status Angsuran",
         choices=LOAN_STATE
     )
-    start_budget = forms.FloatField(
+    start_budget = forms.DecimalField(
         label="Harga Awal",
         widget=forms.TextInput
     )
-    end_budget = forms.FloatField(
+    end_budget = forms.DecimalField(
         label="Harga Akhir",
         widget=forms.TextInput
     )
@@ -98,7 +98,7 @@ class EstateSearchForm(forms.Form):
         label='Tipe Rumah',
         max_length=100
     )
-    start_price = forms.FloatField(
+    start_price = forms.DecimalField(
         label='Harga Awal',
         min_value=0,
         widget=forms.TextInput(
@@ -108,7 +108,7 @@ class EstateSearchForm(forms.Form):
             }
         )
     )
-    end_price = forms.FloatField(
+    end_price = forms.DecimalField(
         label='Harga Akhir',
         min_value=0,
         widget=forms.TextInput(
@@ -137,4 +137,10 @@ class EstateSearchForm(forms.Form):
                 "step": 1
             }
         )
+    )
+
+
+class PurchaseForm(forms.Form):
+    down_payment = forms.ModelMultipleChoiceField(
+        queryset=EstateDetails.objects.all()
     )

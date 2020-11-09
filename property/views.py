@@ -1,6 +1,6 @@
 import logging
 from .utilities import get_recomendation, calc_loan_weight
-from .forms import LoginForm, CustomerForm, EstateSearchForm
+from .forms import LoginForm, CustomerForm, EstateSearchForm, PurchaseForm
 from .models import Customer, Estate, EstateDetails, EstateGallery
 from django.contrib.auth import authenticate, logout, login
 from django.contrib.auth.models import User
@@ -184,6 +184,11 @@ def estate_detail(request, pk):
     """
     estate = get_object_or_404(Estate, pk=pk)
 
+    # customer = request.user.customer
+    # estate = Estate.objects.get(pk=pk)
+
+    # PurchaseForm()
+
     logger.info(f"{request.user} mencoba masuk")
     templates = "estate/estate_detail.html"
     context = {
@@ -194,6 +199,7 @@ def estate_detail(request, pk):
         "estate_gallery": estate.estategallery_set.all(),
         "estate_amenity": estate.estateamenity_set.all(),
         "estate_details": estate.estatedetails_set.all(),
+        "purchase_forms": PurchaseForm()
     }
 
     return render(request, templates, context)
