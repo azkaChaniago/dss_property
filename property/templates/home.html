@@ -7,7 +7,7 @@
 <!--/ Carousel Star /-->
 <div class="intro intro-carousel">
   <div id="carousel" class="owl-carousel owl-theme">
-    {% for est in estates %}
+    {% for est in estates_slides %}
     <div
       class="carousel-item-a intro-item bg-image"
       style="background-image: url('{{ est.picture }}')"
@@ -58,7 +58,7 @@
       </div>
     </div>
     <div class="row">
-      {% for res in query_results%}
+      {% for res in query_results %}
       <div class="carousel-item-b">
         <div class="card-box-a card-shadow">
           <div class="img-box-a">

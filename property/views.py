@@ -4,6 +4,7 @@ from .forms import LoginForm, CustomerForm, EstateSearchForm
 from .models import Customer, Estate, EstateDetails, EstateGallery, Purchase
 from django.contrib.auth import authenticate, logout, login
 from django.contrib.auth.models import User
+from django.core.paginator import Paginator
 from django.http import JsonResponse
 from django.shortcuts import render, redirect, reverse, get_object_or_404
 
@@ -88,11 +89,12 @@ def home(request):
     Finding calculation is finished here
     the rest is orm the recomendations id into Estate model
     """
-
+    estates = Estate.objects.filter(pk__in=recomendations)
     context = {
         "title": "Welcome",
         "menu": "home_menu",
-        "estates": Estate.objects.filter(pk__in=recomendations),
+        "estates_slides": estates[:3],
+        "estates": estates,
         "estate_forms": EstateSearchForm()
     }
 
@@ -235,10 +237,16 @@ def estate_list(request):
 
     if filters:
         estate = estate.filter(**filters)
-        context.update({
-            "title": "Hasil Pencarian",
-            "estates": estate
-        })
+    
+    paginator = Paginator(estate, 2)
+
+    page = request.GET.get("page", 1)
+    estate = paginator.get_page(page)
+
+    context.update({
+        "title": "Hasil Pencarian",
+        "estates": estate
+    })
     
     return render(request, templates, context)
 
