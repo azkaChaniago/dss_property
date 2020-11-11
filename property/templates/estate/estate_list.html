@@ -99,28 +99,29 @@
       <div class="col-sm-12">
         <nav class="pagination-a">
           <ul class="pagination justify-content-end">
-            {% if estate.has_previous %}
-            <li class="page-item">
-              <a class="page-link" href="&page=1">1</a>
-            </li>
-            <li class="page-item disabled">
-              <a class="page-link" href="&page={{ estate.previous_page_number }}" tabindex="-1">
+            {% if estates.has_previous %}
+            <li class="page-item prev">
+              <a class="page-link" href="?page={{ estates.previous_page_number }}" tabindex="-1">
                 <span class="ion-ios-arrow-back"></span>
               </a>
             </li>
             {% endif %}
-            <li class="page-item">
-              {{ estate.number }} of {{ estate.paginator.num_pages }}
-              <a class="page-link" href="#">1</a>
-            </li>
-            {% if estate.has_previous %}
+            {% for est in estates.paginator.page_range %}
+              {% if estates.number == est %}
+              <li class="page-item active">
+                <a class="page-link" href="?page={{ est }}">{{ est }}</a> 
+              </li>
+              {% else %}
+                <li class="page-item">
+                  <a class="page-link" href="?page={{ est }}">{{ est }}</a>
+                </li>
+              {% endif %}
+            {% endfor %}
+            {% if estates.has_next %}
             <li class="page-item next">
-              <a class="page-link" href="&page{{ estate.num_page_number }}">
+              <a class="page-link" href="?page={{ estates.next_page_number }}">
                 <span class="ion-ios-arrow-forward"></span>
               </a>
-            </li>
-            <li class="page-item">
-              <a href="&page={{ estate.paginator.num_pages }}" class="page-link"></a>
             </li>
             {% endif %}
           </ul>

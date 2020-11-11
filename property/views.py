@@ -211,7 +211,6 @@ def estate_list(request):
     context = {
         "title": "Daftar Properti",
         "menu": "estate_list_menu",
-        "estates": estate,
         "estate_forms": EstateSearchForm()
     }
 
@@ -238,9 +237,9 @@ def estate_list(request):
     if filters:
         estate = estate.filter(**filters)
     
-    paginator = Paginator(estate, 2)
+    paginator = Paginator(estate, 3)
 
-    page = request.GET.get("page", 1)
+    page = request.GET.get("page")
     estate = paginator.get_page(page)
 
     context.update({
