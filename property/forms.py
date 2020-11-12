@@ -45,15 +45,15 @@ class CustomerForm(forms.Form):
         max_length=255,
         widget=forms.PasswordInput
     )
-    address = forms.Textarea(
+    address = forms.CharField(
         label='Alamat',
-        widget=forms.TextInput()
+        widget=forms.Textarea()
     )
     phone = forms.CharField(
         label='No Telepon / HP',
         max_length=100,
     )
-    job_ktp = forms.ModelMultipleChoiceField(
+    job_ktp = forms.ModelChoiceField(
         label="Pekerjaan KTP",
         queryset=Profession.objects.all()
     )
@@ -64,10 +64,13 @@ class CustomerForm(forms.Form):
     salary = forms.IntegerField(
         label="Gaji / Upah",
     )
-    on_loan = forms.BooleanField()
+    on_loan = forms.BooleanField(
+        label="Pinjaman"
+    )
     loan_state = forms.ChoiceField(
         label="Status Angsuran",
-        choices=LOAN_STATE
+        choices=LOAN_STATE,
+        required=False
     )
     start_budget = forms.DecimalField(
         label="Harga Awal",

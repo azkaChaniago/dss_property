@@ -68,7 +68,7 @@
                   {{ form.phone.error }}
                   {{ form.phone.label }}
                   {% render_field form.phone class+='form-control form-control-lg form-control-a' placeholder=form.phone.label %}
-                </div>
+                </div> 
               </div>
               <div class="col-6">
                 <div class="form-group">
@@ -87,10 +87,10 @@
                 </div>
               </div>
               <div class="col-3">
-                <div class="form-group">
+                <div class="form-check">
                   {{ form.on_loan.error }}
+                  {% render_field form.on_loan class+='form-check-input form-control-a' placeholder=form.on_loan.label %}
                   {{ form.on_loan.label }}
-                  {% render_field form.on_loan class+='form-control form-control-lg form-control-a' placeholder=form.on_loan.label %}
                 </div>
               </div>
               <div class="col-3">
