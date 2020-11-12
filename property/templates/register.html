@@ -4,7 +4,7 @@
 
 <div class="col-sm-12 section-t8">
   <div class="row">
-    <div class="col-md-6 offset-md-3">
+    <div class="col-md-8 offset-md-2">
       <div class="icon-box section-b2">
         <div class="icon-box-icon">
           <span class="ion-ios-home"></span>
@@ -21,7 +21,103 @@
           {% csrf_token %}
           <div id="errormessage">{{ message }}</div>
           <div class="row mt-3">
-            {{ form.as_p }}
+            <div class="row col-12">
+              <div class="col-6">
+                <div class="form-group">
+                  {{ form.email.error }}
+                  {{ form.email.label }}
+                  {% render_field form.email class+='form-control form-control-lg form-control-a' placeholder=form.email.label %}
+                </div>
+              </div>
+              <div class="col-6">
+                <div class="form-group">
+                  {{ form.fullname.error }}
+                  {{ form.fullname.label }}
+                  {% render_field form.fullname class+='form-control form-control-lg form-control-a' placeholder=form.fullname.label %}
+                </div>
+              </div>
+            </div>
+            <div class="row col-12">
+              <div class="col-6">
+                <div class="form-group">
+                  {{ form.password.error }}
+                  {{ form.password.label }}
+                  {% render_field form.password class+='form-control form-control-lg form-control-a' placeholder=form.password.label %}
+                </div>
+              </div>
+              <div class="col-6">
+                <div class="form-group">
+                  {{ form.password_repeat.error }}
+                  {{ form.password_repeat.label }}
+                  {% render_field form.password_repeat class+='form-control form-control-lg form-control-a' placeholder=form.password_repeat.label %}
+                </div>
+              </div>
+            </div>
+            <div class="row col-12">
+              <div class="col-12">
+                <div class="form-group">
+                  {{ form.address.error }}
+                  {{ form.address.label }}
+                  {% render_field form.address class+='form-control form-control-lg form-control-a' placeholder=form.address.label %}
+                </div>
+              </div>
+            </div>
+            <div class="row col-12">
+              <div class="col-6">
+                <div class="form-group">
+                  {{ form.phone.error }}
+                  {{ form.phone.label }}
+                  {% render_field form.phone class+='form-control form-control-lg form-control-a' placeholder=form.phone.label %}
+                </div>
+              </div>
+              <div class="col-6">
+                <div class="form-group">
+                  {{ form.job_ktp.error }}
+                  {{ form.job_ktp.label }}
+                  {% render_field form.job_ktp class+='form-control form-control-lg form-control-a' placeholder=form.job_ktp.label %}
+                </div>
+              </div>
+            </div>
+            <div class="row col-12">
+              <div class="col-6">
+                <div class="form-group">
+                  {{ form.salary.error }}
+                  {{ form.salary.label }}
+                  {% render_field form.salary class+='form-control form-control-lg form-control-a' placeholder=form.salary.label %}
+                </div>
+              </div>
+              <div class="col-3">
+                <div class="form-group">
+                  {{ form.on_loan.error }}
+                  {{ form.on_loan.label }}
+                  {% render_field form.on_loan class+='form-control form-control-lg form-control-a' placeholder=form.on_loan.label %}
+                </div>
+              </div>
+              <div class="col-3">
+                <div class="form-group">
+                  {{ form.loan_state.error }}
+                  {{ form.loan_state.label }}
+                  {% render_field form.loan_state class+='form-control form-control-lg form-control-a' placeholder=form.loan_state.label %}
+                </div>
+              </div>
+            </div>
+            <div class="row col-12">
+              <div class="col-6">
+                <div class="form-group">
+                  {{ form.start_budget.error }}
+                  {{ form.start_budget.label }}
+                  {% render_field form.start_budget class+='form-control form-control-lg form-control-a' placeholder=form.start_budget.label %}
+                </div>
+              </div>
+              <div class="col-6">
+                <div class="form-group">
+                  {{ form.end_budget.error }}
+                  {{ form.end_budget.label }}
+                  {% render_field form.end_budget class+='form-control form-control-lg form-control-a' placeholder=form.end_budget.label %}
+                </div>
+              </div>
+            </div>
+            {# form.as_p #}
             <div class="col-md-12">
               <button type="submit" class="btn btn-a">Daftar</button>
               &nbsp;atau&nbsp;

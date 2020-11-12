@@ -45,9 +45,8 @@ class CustomerForm(forms.Form):
         max_length=255,
         widget=forms.PasswordInput
     )
-    address = forms.CharField(
+    address = forms.Textarea(
         label='Alamat',
-        max_length=100,
         widget=forms.TextInput()
     )
     phone = forms.CharField(
@@ -58,10 +57,10 @@ class CustomerForm(forms.Form):
         label="Pekerjaan KTP",
         queryset=Profession.objects.all()
     )
-    job = forms.CharField(
-        label="Pekerjaan",
-        max_length=100
-    )
+    # job = forms.CharField(
+    #     label="Pekerjaan",
+    #     max_length=100
+    # )
     salary = forms.IntegerField(
         label="Gaji / Upah",
     )
