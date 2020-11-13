@@ -1,3 +1,4 @@
+import logging
 from django import forms
 from django.forms import TextInput, Textarea, IntegerField, FloatField, DecimalField
 from django.contrib.auth.models import User
@@ -18,15 +19,7 @@ class LoginForm(forms.Form):
         model = User
 
 
-class CustomerForm(forms.Form):
-    LOAN_STATE = (
-        ("0", "-"),
-        ("1", "Approval"),
-        ("2", "Penalty"),
-        ("3", "In Arrears"),
-        ("4", "Paid Off"),
-    )
-    
+class CustomerForm(forms.Form):    
     email = forms.CharField(
         label='Alamat email',
         max_length=100
@@ -45,49 +38,16 @@ class CustomerForm(forms.Form):
         max_length=255,
         widget=forms.PasswordInput
     )
-    address = forms.CharField(
-        label='Alamat',
-        max_length=255
-    )
-    phone = forms.CharField(
-        label='No Telepon / HP',
-        max_length=100,
-    )
-    job_ktp = forms.ModelChoiceField(
-        label="Pekerjaan KTP",
-        queryset=Profession.objects.all()
-    )
-    # job = forms.CharField(
-    #     label="Pekerjaan",
-    #     max_length=100
-    # )
-    salary = forms.IntegerField(
-        label="Gaji / Upah",
-    )
-    on_loan = forms.BooleanField(
-        label="Pinjaman"
-    )
-    loan_state = forms.ChoiceField(
-        label="Status Angsuran",
-        choices=LOAN_STATE,
-        required=False
-    )
-    start_budget = forms.DecimalField(
-        label="Harga Awal",
-        widget=forms.TextInput
-    )
-    end_budget = forms.DecimalField(
-        label="Harga Akhir",
-        widget=forms.TextInput
-    )
-
+    
     def clean(self):
         cleaned_data = super(CustomerForm, self).clean()
         password = cleaned_data.get("password")
         password_repeat = cleaned_data.get("password_repeat")
-
+        
         if password != password_repeat:
-            raise forms.ValidationError("password and password_repeat does not match!")
+            message = "password and password_repeat does not match!"
+            logging.warning(message)
+            raise forms.ValidationError(message)
 
 class EstateForm(forms.ModelForm):
     class Meta:
@@ -140,3 +100,49 @@ class EstateSearchForm(forms.Form):
             }
         )
     )
+
+class Criteria(forms.Form):
+    LOAN_STATE = (
+        ("0", "-"),
+        ("1", "Approval"),
+        ("2", "Penalty"),
+        ("3", "In Arrears"),
+        ("4", "Paid Off"),
+    )
+
+    address = forms.CharField(
+        label='Alamat',
+        max_length=255
+    )
+    phone = forms.CharField(
+        label='No Telepon / HP',
+        max_length=100,
+    )
+    job_ktp = forms.ModelChoiceField(
+        label="Pekerjaan KTP",
+        queryset=Profession.objects.all()
+    )
+    # job = forms.CharField(
+    #     label="Pekerjaan",
+    #     max_length=100
+    # )
+    salary = forms.IntegerField(
+        label="Gaji / Upah",
+    )
+    on_loan = forms.BooleanField(
+        label="Pinjaman"
+    )
+    loan_state = forms.ChoiceField(
+        label="Status Angsuran",
+        choices=LOAN_STATE,
+        required=False
+    )
+    start_budget = forms.DecimalField(
+        label="Harga Awal",
+        widget=forms.TextInput
+    )
+    end_budget = forms.DecimalField(
+        label="Harga Akhir",
+        widget=forms.TextInput
+    )
+

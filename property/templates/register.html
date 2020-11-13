@@ -18,7 +18,25 @@
                     method="POST"
                     role="form">
                     {% csrf_token %}
-                    <div id="errormessage">{{ message }}</div>
+                    <div id="errormessage">
+                      {% if message %}
+                        {% if status == 'warning' %}
+                          <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                            {{ message }}
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                              <span aria-hidden="true">&times;</span>
+                            </button>
+                          </div>
+                        {% elif status == 'error' %}
+                          <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            {{ message }}
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                              <span aria-hidden="true">&times;</span>
+                            </button>
+                          </div>
+                        {% endif %}
+                      {% endif %}
+                    </div>
                       <div class="row">
                         <div class="col-12 text-center">
                           <h4 class="icon-title mt-3">Buat Akun</h4>
@@ -26,28 +44,28 @@
                       </div>
                       <div class="row">
                         <div class="form-group col-12">
-                          {{ form.email.error }}
+                          {{ form.errors.email }}
                           {{ form.email.label }}
                           {% render_field form.email class+='form-control form-control-lg form-control-a' placeholder=form.email.label %}
                         </div>
                       </div>
                       <div class="row">
                         <div class="form-group col-12">
-                          {{ form.fullname.error }}
+                          {{ form.errors.fullname }}
                           {{ form.fullname.label }}
                           {% render_field form.fullname class+='form-control form-control-lg form-control-a' placeholder=form.fullname.label %}
                         </div>
                       </div>
                       <div class="row">
                         <div class="form-group col-12">
-                          {{ form.password.error }}
+                          {{ form.errors.password }}
                           {{ form.password.label }}
                           {% render_field form.password class+='form-control form-control-lg form-control-a' placeholder=form.password.label %}
                         </div>
                       </div>
                       <div class="row">
                         <div class="form-group col-12">
-                          {{ form.password_repeat.error }}
+                          {{ form.errors.password_repeat }}
                           {{ form.password_repeat.label }}
                           {% render_field form.password_repeat class+='form-control form-control-lg form-control-a' placeholder=form.password_repeat.label %}
                         </div>
