@@ -47,7 +47,7 @@ class CustomerForm(forms.Form):
     )
     address = forms.CharField(
         label='Alamat',
-        widget=forms.Textarea()
+        max_length=255
     )
     phone = forms.CharField(
         label='No Telepon / HP',

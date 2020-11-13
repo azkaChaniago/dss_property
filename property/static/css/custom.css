@@ -29,3 +29,12 @@
   background-position: 50% 0;
   background-size: cover;
 }
+
+#register-image {
+  background-image: url('../img/property-2.jpg');
+  background-repeat: no-repeat;
+  background-position: 50% 0;
+  background-size: cover;
+  width: 100%;
+  height: 100%;
+}
