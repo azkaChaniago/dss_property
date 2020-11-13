@@ -149,6 +149,7 @@ def register_client(request):
             user = User.objects.filter(
                 email=email
             ).first()
+
             if not user:
                 username = fullname.lower().replace(" ", "_")
                 splited_name = fullname.split()
@@ -156,24 +157,36 @@ def register_client(request):
                 last_name = splited_name[-1] if len(splited_name) > 1 else ""
                 password = form.cleaned_data.get("password")
 
-                user = User(
-                    username=username,
-                    first_name=first_name,
-                    last_name=last_name,
-                    email=email
+                try:
+                    user = User(
+                        username=username,
+                        first_name=first_name,
+                        last_name=last_name,
+                        email=email
+                    )
+                    user.set_password(password)
+                    user.save()
+                except Exception as err:
+                    logging.error(str(err))
+                    context["message"] = "Terjadi kesalahan pada saat mendaftarkan user!"
+                    context["status"] = "error"
+            
+            try:
+                customer = Customer(
+                    user=user,
+                    fullname=fullname
                 )
-                user.set_password(password)
-                user.save()
+                customer.save()
 
                 authenticate(
                     username=username, password=password
                 )
-
                 return redirect("login_client")
-            else:
-                context["message"] = f"Email {email} sudah terdaftar!"
-                context["status"] = "warning"
-
+            except Exception as err:
+                logging.error(str(err))
+                context["message"] = "Terjadi kesalahan pada saat mendaftarkan customer!"
+                context["status"] = "error"
+            
     return render(request, templates, context)
     
 
@@ -318,3 +331,18 @@ def get_detail_purchasement(request, pk):
         }
 
     return JsonResponse(response, safe=False)
+
+            # customer = Customer(
+            #     user=user,
+            #     fullname=fullname,
+            #     address=form.cleaned_data.get("address"),
+            #     phone=form.cleaned_data.get("phone"),
+            #     job_ktp=form.cleaned_data.get("job_ktp"),
+            #     job=form.cleaned_data.get("job"),
+            #     salary=form.cleaned_data.get("salary"),
+            #     on_loan=form.cleaned_data.get("on_loan"),
+            #     loan_state=form.cleaned_data.get("loan_state"),
+            #     start_budget=form.cleaned_data.get("start_budget"),
+            #     end_budget=form.cleaned_data.get("end_budget")
+            # )
+            # customer.save()
