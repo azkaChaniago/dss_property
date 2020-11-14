@@ -101,7 +101,7 @@ class EstateSearchForm(forms.Form):
         )
     )
 
-class CriteriaForm(forms.Form):
+class CriteriaForm(forms.ModelForm):
     LOAN_STATE = (
         ("0", "-"),
         ("1", "Approval"),
@@ -110,40 +110,17 @@ class CriteriaForm(forms.Form):
         ("4", "Paid Off"),
     )
 
-    address = forms.CharField(
-        label='Alamat',
-        widget=forms.Textarea(attrs={"cols": 3, "rows": 3})
-    )
-    phone = forms.CharField(
-        label='No Telepon / HP',
-        max_length=100,
-    )
-    job_ktp = forms.ModelChoiceField(
-        label="Pekerjaan KTP",
-        queryset=Profession.objects.all()
-    )
-    # job = forms.CharField(
-    #     label="Pekerjaan",
-    #     max_length=100
-    # )
-    salary = forms.IntegerField(
-        label="Gaji / Upah",
-    )
-    on_loan = forms.BooleanField(
-        label="Pinjaman",
-        required=False
-    )
-    loan_state = forms.ChoiceField(
-        label="Status Angsuran",
-        choices=LOAN_STATE,
-        required=False
-    )
-    start_budget = forms.DecimalField(
-        label="Harga Awal",
-        widget=forms.TextInput
-    )
-    end_budget = forms.DecimalField(
-        label="Harga Akhir",
-        widget=forms.TextInput
-    )
+    def clean(self):
+        cleaned_data = super(CriteriaForm, self).clean()
+        start_budget = cleaned_data.get("start_budget")
+        end_budget = cleaned_data.get("end_budget")
+        
+        if start_budget >= end_budget:
+            message = "start_buget cannot greater than equal end_buget"
+            logging.warning(message)
+            raise forms.ValidationError(message)
+
+    class Meta:
+        model = Customer
+        exclude = ("user", "fullname", "job")
 

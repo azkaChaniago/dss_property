@@ -13,44 +13,44 @@
           {% csrf_token %}
           <div id="errormessage">{{ message }}</div>
           <div class="form-group">
-            {{ form.errors.address }}
-            {{ form.address.label }}
-            {% render_field form.address class+='form-control form-control-lg form-control-a' placeholder=form.address.label %}
+            {{ form.address.errors }}
+            <label for="{{ form.address.id_for_label }}" class="control-label">{{ form.address.label }}</label>
+            {{ form.address|add_class:'form-control form-control-lg form-control-a' }}
           </div>
           <div class="form-group">
-            {{ form.errors.phone }}
-            {{ form.phone.label }}
-            {% render_field form.phone class+='form-control form-control-lg form-control-a' placeholder=form.phone.label %}
+            {{ form.phone.errors }}
+            <label for="{{ form.phone.id_for_label }}" class="control-label">{{ form.phone.label }}</label>
+            {{ form.phone|add_class:'form-control form-control-lg form-control-a' }}
           </div>
           <div class="form-group">
-            {{ form.errors.job_ktp }}
-            {{ form.job_ktp.label }}
-            {% render_field form.job_ktp class+='form-control form-control-lg form-control-a' placeholder=form.job_ktp.label %}
+            {{ form.job_ktp.errors }}
+            <label for="{{ form.job_ktp.id_for_label }}" class="control-label">{{ form.job_ktp.label }}</label>
+            {{ form.job_ktp|add_class:'form-control form-control-lg form-control-a' }}
           </div>
           <div class="form-group">
-            {{ form.errors.salary }}
-            {{ form.salary.label }}
-            {% render_field form.salary class+='form-control form-control-lg form-control-a' placeholder=form.salary.label %}
+            {{ form.salary.errors }}
+            <label for="{{ form.salary.id_for_label }}" class="control-label">{{ form.salary.label }}</label>
+            {{ form.salary|add_class:'form-control form-control-lg form-control-a' }}
           </div>
           <div class="form-group">
-            {{ form.errors.on_loan }}
-            {{ form.on_loan.label }}
-            {% render_field form.on_loan class+='form-control form-control-lg form-control-a' placeholder=form.on_loan.label %}
+            {{ form.on_loan.errors }}
+            <label for="{{ form.on_loan.id_for_label }}" class="control-label">{{ form.on_loan.label }}</label>
+            {{ form.on_loan|add_class:'form-control form-control-lg form-control-a' }}
           </div>
           <div class="form-group">
-            {{ form.errors.loan_state }}
-            {{ form.loan_state.label }}
-            {% render_field form.loan_state class+='form-control form-control-lg form-control-a' placeholder=form.loan_state.label %}
+            {{ form.loan_state.errors }}
+            <label for="{{ form.loan_state.id_for_label }}" class="control-label">{{ form.loan_state.label }}</label>
+            {{ form.loan_state|add_class:'form-control form-control-lg form-control-a' }}
           </div>
           <div class="form-group">
-            {{ form.errors.start_budget }}
-            {{ form.start_budget.label }}
-            {% render_field form.start_budget class+='form-control form-control-lg form-control-a' placeholder=form.start_budget.label %}
+            {{ form.start_budget.errors }}
+            <label for="{{ form.form.id_for_label }}" class="control-label">{{ form.form.label }}</label>
+            {{ form.start_budget|add_class:'form-control form-control-lg form-control-a' }}
           </div>
           <div class="form-group">
-            {{ form.errors.end_budget }}
-            {{ form.end_budget.label }}
-            {% render_field form.end_budget class+='form-control form-control-lg form-control-a' placeholder=form.end_budget.label %}
+            {{ form.end_budget.errors }}
+            <label for="{{ form.end_budget.id_for_label }}" class="control-label">{{ form.end_budget.label }}</label>
+            {{ form.end_budget|add_class:'form-control form-control-lg form-control-a' }}
           </div>
           <div class="mt-3">
             <div class="form-group">

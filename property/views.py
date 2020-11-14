@@ -347,11 +347,11 @@ def criteria(request):
         "title": "Kriteria",
         "menu": "criteria_menu",
         "customer": customer,
-        "form": CriteriaForm()
+        "form": CriteriaForm(instance=customer)
     }
     
     if request.POST:
-        form = CriteriaForm(request.POST)
+        form = CriteriaForm(request.POST, instance=customer)
         if form.is_valid():
             try:
                 customer.address = form.cleaned_data.get("address")
