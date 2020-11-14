@@ -22,3 +22,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('property.urls')),
 ]
+
+admin.site.site_header = 'Siger Property Admin'
+admin.site.site_title = 'Siger Property'
