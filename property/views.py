@@ -244,7 +244,8 @@ def estate_list(request):
                 )
             })
     elif request.GET.get("type"):
-        filters.update({ "lot_type": request.GET.get("type") })
+        lot_type = f"Tipe {request.GET.get('type')}"
+        filters.update({ "lot_type": lot_type })
 
     if filters:
         estate = estate.filter(**filters)
@@ -369,5 +370,15 @@ def criteria(request):
                 logging.error(err)
                 context["message"] = "Terjadi kesalahan saat menyimpan data!"
                 context["state"] = "error"
+
+    return render(request, templates, context)
+
+
+def about(request):
+    templates = "about.html"
+    context = {
+        "title": "Tentang Kami",
+        "menu": "about_menu",
+    }
 
     return render(request, templates, context)
