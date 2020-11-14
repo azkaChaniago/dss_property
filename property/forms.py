@@ -130,7 +130,8 @@ class CriteriaForm(forms.Form):
         label="Gaji / Upah",
     )
     on_loan = forms.BooleanField(
-        label="Pinjaman"
+        label="Pinjaman",
+        required=False
     )
     loan_state = forms.ChoiceField(
         label="Status Angsuran",
