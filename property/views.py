@@ -88,15 +88,11 @@ def home(request):
         })
 
     recomendations = get_recomendation(criteria)
-    print(recomendations)
-    print(criteria)
     """
     Finding calculation is finished here
     the rest is orm the recomendations id into Estate model
     """
     estates = Estate.objects.filter(pk__in=recomendations)
-    print(estates)
-
     context = {
         "title": "Welcome",
         "menu": "home_menu",
