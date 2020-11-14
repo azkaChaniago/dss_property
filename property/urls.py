@@ -13,4 +13,5 @@ urlpatterns = [
     path('purchase_form/', purchase_form, name="purchase_form"),
     path('purchase_form/<int:pk>/', purchase_form, name="purchase_form"),
     path('get_detail_purchasement/<int:pk>/', get_detail_purchasement, name="get_detail_purchasement"),
+    path('criteria/', criteria, name="criteria"),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

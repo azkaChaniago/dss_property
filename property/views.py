@@ -1,6 +1,6 @@
 import logging
 from .utilities import get_recomendation, calc_loan_weight
-from .forms import LoginForm, CustomerForm, EstateSearchForm
+from .forms import LoginForm, CustomerForm, EstateSearchForm, CriteriaForm
 from .models import Customer, Estate, EstateDetails, EstateGallery, Purchase
 from django.contrib.auth import authenticate, logout, login
 from django.contrib.auth.models import User
@@ -63,6 +63,9 @@ def home(request):
 
     templates = "home.html"
     customer = request.user.customer
+
+    if not customer.job_ktp or not customer.salary or not customer.loan_state:
+        return redirect("criteria")
     
     """
     Pre-processing data and requirements
@@ -332,17 +335,39 @@ def get_detail_purchasement(request, pk):
 
     return JsonResponse(response, safe=False)
 
-            # customer = Customer(
-            #     user=user,
-            #     fullname=fullname,
-            #     address=form.cleaned_data.get("address"),
-            #     phone=form.cleaned_data.get("phone"),
-            #     job_ktp=form.cleaned_data.get("job_ktp"),
-            #     job=form.cleaned_data.get("job"),
-            #     salary=form.cleaned_data.get("salary"),
-            #     on_loan=form.cleaned_data.get("on_loan"),
-            #     loan_state=form.cleaned_data.get("loan_state"),
-            #     start_budget=form.cleaned_data.get("start_budget"),
-            #     end_budget=form.cleaned_data.get("end_budget")
-            # )
-            # customer.save()
+
+def criteria(request):
+
+    if not request.user.is_authenticated:
+        return redirect("login_client")
+    
+    customer = request.user.customer
+    templates = "criteria.html"
+    context = {
+        "title": "Kriteria",
+        "menu": "criteria_menu",
+        "customer": customer,
+        "form": CriteriaForm()
+    }
+    
+    if request.POST:
+        form = CriteriaForm(request.POST)
+        if form.is_valid():
+            try:
+                customer.address = form.cleaned_data.get("address")
+                customer.phone = form.cleaned_data.get("phone")
+                customer.job_ktp = form.cleaned_data.get("job_ktp")
+                customer.salary = form.cleaned_data.get("salary")
+                customer.on_loan = form.cleaned_data.get("on_loan")
+                customer.loan_state = form.cleaned_data.get("loan_state")
+                customer.start_budget = form.cleaned_data.get("start_budget")
+                customer.end_budget = form.cleaned_data.get("end_budget")
+                customer.save()
+
+                return redirect("home")
+            except Exception as err:
+                logging.error(err)
+                context["message"] = "Terjadi kesalahan saat menyimpan data!"
+                context["state"] = "error"
+
+    return render(request, templates, context)

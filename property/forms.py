@@ -101,7 +101,7 @@ class EstateSearchForm(forms.Form):
         )
     )
 
-class Criteria(forms.Form):
+class CriteriaForm(forms.Form):
     LOAN_STATE = (
         ("0", "-"),
         ("1", "Approval"),
