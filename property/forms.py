@@ -112,7 +112,7 @@ class CriteriaForm(forms.Form):
 
     address = forms.CharField(
         label='Alamat',
-        max_length=255
+        widget=forms.Textarea(attrs={"cols": 3, "rows": 3})
     )
     phone = forms.CharField(
         label='No Telepon / HP',
