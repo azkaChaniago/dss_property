@@ -1,6 +1,5 @@
 *.jpg
 *.pyc
-db.sqlite3
 .vscode/
 dss_property/__pycache__
 property/__pycache__
