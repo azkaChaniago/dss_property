@@ -1,1 +1,1 @@
-web: gunicorn dss_property.wsgi --log-file
+web: gunicorn dss_property.wsgi --log-file -

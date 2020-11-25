@@ -3,10 +3,11 @@ Babel==2.8.0
 backcall==0.2.0
 colorama==0.4.4
 decorator==4.4.2
+dj-database-url==0.5.0
 Django==2.2
-django-heroku
+django-heroku==0.3.1
 django-widget-tweaks==1.4.8
-gunicorn
+gunicorn==20.0.4
 ipdb==0.13.4
 ipython
 ipython-genutils==0.2.0
@@ -18,6 +19,7 @@ parso==0.7.1
 pickleshare==0.7.5
 Pillow==8.0.0
 prompt-toolkit==3.0.8
+psycopg2==2.8.6
 Pygments==2.7.2
 pylint==2.6.0
 pytz==2020.1
@@ -27,4 +29,5 @@ toml==0.10.1
 traitlets
 typed-ast
 wcwidth
+whitenoise
 wrapt
