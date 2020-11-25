@@ -6,7 +6,7 @@ decorator==4.4.2
 Django==2.2
 django-widget-tweaks==1.4.8
 ipdb==0.13.4
-ipython==7.18.1
+ipython
 ipython-genutils==0.2.0
 isort==5.6.4
 jedi==0.17.2
