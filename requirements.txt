@@ -6,6 +6,7 @@ decorator==4.4.2
 Django==2.2
 django-heroku
 django-widget-tweaks==1.4.8
+gunicorn
 ipdb==0.13.4
 ipython
 ipython-genutils==0.2.0
